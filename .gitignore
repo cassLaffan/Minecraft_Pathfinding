@@ -1,0 +1,105 @@
+minecraft/server/*
+!minecraft/server/
+!minecraft/server/eula.txt
+
+minecraft/server/plugins/*
+!minecraft/server/plugins/
+!minecraft/server/plugins/.keep
+
+# gradle
+.gradle/
+build/
+out/
+classes/
+
+# maven
+target/
+
+# eclipse
+*.launch
+
+# idea
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# vscode
+.settings/
+.vscode/
+bin/
+.classpath
+.project
+
+# visual studio
+.vs/
+*.vcxproj*
+
+# macos
+*.DS_Store
+
+# fabric
+run/
+
+# suit intergration stuff
+ARAIG*
+ARAIG_SDK_Visualization_Tool_Data/
+Debug/
+Release/
+x64/
+*.stackdump
+
+# C.gitignore
+
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
