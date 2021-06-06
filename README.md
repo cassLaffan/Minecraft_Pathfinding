@@ -1,6 +1,7 @@
 ﻿# PathfindingAlgorithms
-This is the development environment for the path finding and ARAIG simulation in
-Minecraft.
+This is the development environment and mod that accompanies the ideally soon-to-be-published 
+paper that outlines this work. The work is a continuation of the work found here: 
+https://ieeexplore.ieee.org/document/9284922
 
 ### Mod
 In order to run this mod, ensure that you have Fabric installed. The download can be found 
