@@ -1,4 +1,4 @@
-﻿# PathfindingAlgorithms
+﻿# Minecraft Pathfinding
 This is the development environment and mod that accompanies the ideally soon-to-be-published 
 paper that outlines this work. The work is a continuation of the work found here: 
 https://ieeexplore.ieee.org/document/9284922
