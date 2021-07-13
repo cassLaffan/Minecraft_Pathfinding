@@ -62,6 +62,11 @@ struct Octree* initializeOctree(struct Bounds* bound);
 struct Octree* makeOctree(int num, struct Node** nodes, struct Bounds* bounds);
 
 /*
+* A helper function that checks neighbouring octants for potential adjacencies.
+*/
+int checkNearbyOctants(struct Bounds* bounds, struct Node* node);
+
+/*
 * The function that recursively searchest through an octree for neighbouring nodes.
 */
 void recurseOctree(struct Octree* octree, struct Node* node);
