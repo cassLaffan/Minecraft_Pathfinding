@@ -164,6 +164,37 @@ struct Octree* makeOctree(int num, struct Node** nodes, struct Bounds* bounds) {
     return octree;
 }
 
+//Futile attempt to avoid code spaghetti
+int checkNearbyOctants(struct Bounds* bounds, struct Node* node) {
+    
+    //Do not want to check adjacencies right above or right below. Don't want the firefighter hovering
+    //That's witchcraft I'd like to avoid
+    struct Node* newNodeOne = createNode(-1, -1, -1, node->x + 2, node->y, node->z);
+    struct Node* newNodeTwo = createNode(-1, -1, -1, node->x - 2, node->y, node->z);
+    struct Node* newNodeThree = createNode(-1, -1, -1, node->x, node->y, node->z + 2);
+    struct Node* newNodeFour = createNode(-1, -1, -1, node->x, node->y, node->z - 2);
+
+    struct Node* newNodeFive = createNode(-1, -1, -1, node->x + 2, node->y, node->z + 2); 
+    struct Node* newNodeSix = createNode(-1, -1, -1, node->x - 2, node->y, node->z + 2); 
+    struct Node* newNodeSeven = createNode(-1, -1, -1, node->x + 2, node->y, node->z - 2);
+    struct Node* newNodeEight = createNode(-1, -1, -1, node->x - 2, node->y, node->z - 2);
+    
+    int isNear = (isInBounds(bounds, newNodeOne) || isInBounds(bounds, newNodeTwo) || isInBounds(bounds, newNodeThree) || isInBounds(bounds, newNodeFour) 
+        || isInBounds(bounds, newNodeFive) || isInBounds(bounds, newNodeSix) || isInBounds(bounds, newNodeSeven) || isInBounds(bounds, newNodeEight));
+
+    free(newNodeOne);
+    free(newNodeTwo);
+    free(newNodeThree);
+    free(newNodeFour);
+
+    free(newNodeFive);
+    free(newNodeSix);
+    free(newNodeSeven);
+    free(newNodeEight);
+
+    return isNear;
+}
+
 void recurseOctree(struct Octree* octree, struct Node* node) {
     //base case: has reached a leaf with nodes
     if (octree->leaf) {
@@ -179,7 +210,7 @@ void recurseOctree(struct Octree* octree, struct Node* node) {
         for (int i = 0; i < 8; i++) {
             printf("Xbound: %f\n", octree->children[i]->bounds->xmax);
             //check bounds, eliminate octants that aren't needed
-            if (isInBounds(octree->children[i]->bounds, node)) {
+            if (isInBounds(octree->children[i]->bounds, node)  || checkNearbyOctants(octree->children[i]->bounds, node)) {
                 recurseOctree(octree->children[i], node);
             }
         }
