@@ -206,7 +206,7 @@ void recurseOctree(struct Octree* octree, struct Node* node) {
         }
     }
     //recursive case: must recurse through the children
-    else {
+    else if(octree->children[0]){
         for (int i = 0; i < 8; i++) {
             printf("Xbound: %f\n", octree->children[i]->bounds->xmax);
             //check bounds, eliminate octants that aren't needed
