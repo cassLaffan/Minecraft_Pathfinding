@@ -44,7 +44,7 @@ public class Radio {
 
         ci.cancel();
 
-        if (packet.getSenderUuid().equals(mc.player.getUuid())) {
+        if (packet.getSender().equals(mc.player.getUuid())) {
             return;
         }
 

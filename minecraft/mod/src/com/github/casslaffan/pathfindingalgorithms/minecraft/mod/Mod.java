@@ -145,7 +145,7 @@ public class Mod extends Thread implements ModInitializer {
             out.writeFloat((float) mc.player.getX());
             out.writeFloat((float) mc.player.getY());
             out.writeFloat((float) mc.player.getZ());
-            out.writeFloat(Util.yawToAbsoluteToRad(mc.player.yaw));
+            out.writeFloat(Util.yawToAbsoluteToRad(mc.player.headYaw));
         }
         out.flush();
     }
