@@ -1,35 +1,33 @@
 package com.github.casslaffan.pathfindingalgorithms.minecraft.mod;
 
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.Vec3d;
-import org.lwjgl.system.CallbackI;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.Random;
+import java.util.concurrent.*;
+import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class Mod extends Thread implements ModInitializer {
-    MinecraftClient mc = MinecraftClient.getInstance();
-    Renderer renderer = new Renderer();
-    RpcServer rpc = new RpcServer(25566);
+    public static Mod instance;
+
+    public MinecraftClient mc = MinecraftClient.getInstance();
+    public Graph graph;
+    public RpcServer rpc;
+    public Radio radio;
+    public HashMap<String, Consumer<String[]>> commands = new HashMap<>();
 
     boolean recording = false;
     ScheduledExecutorService recordService = Executors.newSingleThreadScheduledExecutor();
@@ -46,45 +44,71 @@ public class Mod extends Thread implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        instance = this;
+
+        graph = new Graph();
+        rpc = new RpcServer(25566);
+        radio = new Radio();
+
         rpc.register(RPC_GET_LOCATION, this::getLocation);
         rpc.register(RPC_GET_NODES, this::getNodes);
         rpc.register(RPC_UPSERT_GRAPH, this::upsertGraph);
         rpc.register(RPC_RESET_GRAPH, this::resetGraph);
         rpc.start();
 
-        WorldRenderEvents.BEFORE_DEBUG_RENDER.register(renderer);
+        WorldRenderEvents.BEFORE_DEBUG_RENDER.register(graph);
 
-        // :)
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-            dispatcher.register(CommandManager.literal("start").executes(ctx -> { recording = true; return 1; }));
-            dispatcher.register(CommandManager.literal("stop").executes(ctx -> { recording = false; return 1; }));
-            dispatcher.register(CommandManager.literal("delete").executes(ctx -> { renderer.delete(); return 1; }));
-            dispatcher.register(CommandManager.literal("reset").executes(ctx -> { renderer.reset(); return 1; }));
-            dispatcher.register(CommandManager.literal("hide").executes(ctx -> { renderer.toggleHidden(); return 1; }));
-            dispatcher.register(CommandManager.literal("blind").executes(ctx -> {
-                if (mc.player == null) return 0;
+        commands.put("/start", args -> recording = true);
+        commands.put("/stop", args -> recording = false);
+        commands.put("/delete", args -> graph.delete());
+        commands.put("/reset", args -> graph.reset());
+        commands.put("/hide", args -> graph.toggleHidden());
+        commands.put("/blind", args -> {
+            if (mc.player == null) return;
 
-                if (mc.player.hasStatusEffect(StatusEffects.BLINDNESS)) {
-                    mc.player.removeStatusEffect(StatusEffects.BLINDNESS);
-                } else {
-                    mc.player.addStatusEffect(
-                            new StatusEffectInstance(StatusEffects.BLINDNESS, 300 * 20, 0, false, false)
-                    );
-                }
+            if (mc.player.hasStatusEffect(StatusEffects.BLINDNESS)) {
+                mc.player.removeStatusEffect(StatusEffects.BLINDNESS);
+            } else {
+                mc.player.addStatusEffect(
+                        new StatusEffectInstance(StatusEffects.BLINDNESS, 300 * 20, 0, false, false)
+                );
+            }
+        });
+        commands.put("/interval", args -> {
+            int ms = Integer.parseInt(args[1]);
+            recordHandler.cancel(true);
+            recordHandler = recordService.scheduleAtFixedRate(this::record, 0, ms, TimeUnit.MILLISECONDS);
+        });
+        commands.put("/range", args -> {
+            double blocks = Double.parseDouble(args[1]);
+            radio.range = blocks;
+        });
+        commands.put("/id", args -> {
+            if (mc.player == null) return;
 
-                return 1;
-            }));
-            dispatcher.register(CommandManager.literal("interval")
-                    .then(CommandManager.argument("ms", IntegerArgumentType.integer(100))
-                            .executes(ctx -> {
-                                int ms = IntegerArgumentType.getInteger(ctx, "ms");
-                                recordHandler.cancel(true);
-                                recordHandler = recordService.scheduleAtFixedRate(this::record, 0, ms, TimeUnit.MILLISECONDS);
-                                return 1;
-                            })));
+            if (args.length == 1) {
+                mc.player.sendMessage(new LiteralText("" + Node.clientPlayerId), false);
+            } else {
+                Node.clientPlayerId = Integer.parseInt(args[1]);
+                Node.clientSequenceId = 0;
+            }
         });
 
         recordHandler = recordService.scheduleAtFixedRate(this::record, 0, 500, TimeUnit.MILLISECONDS);
+    }
+
+    public boolean handleCommand(String command) {
+        try {
+            String[] args = command.split(" ");
+            if (commands.containsKey(args[0])) {
+                commands.get(args[0]).accept(args);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     public void record() {
@@ -94,16 +118,18 @@ public class Mod extends Thread implements ModInitializer {
             Vec3d currPos = mc.player.getPos();
 
             if (!currPos.isInRange(lastPos, 0.1)) {
-                renderer.addNode(currPos);
+                Node node = new Node(currPos);
+                graph.addNode(node);
+                radio.sendNode(node);
             }
 
             lastPos = currPos;
         }
 
         String statusText = String.format(
-                "%s [%d nodes] (/start, /stop, /reset, /delete, /interval <ms>, /hide, /blind)",
+                "%s [%d nodes] (/start, /stop, /reset, /delete, /hide, /blind, /interval <ms>, /range <blocks>, /id [id])",
                 recording ? "Recording" : "Paused",
-                renderer.numNodes()
+                graph.numNodes()
         );
 
         mc.player.sendMessage(new LiteralText(statusText), true);
@@ -125,14 +151,16 @@ public class Mod extends Thread implements ModInitializer {
     }
 
     public void getNodes(DataInputStream in, DataOutputStream out) throws IOException {
-        int len = renderer.numNodes();
+        int len = graph.numNodes();
         out.writeInt(len);
 
-        Iterator<Node> iter = renderer.nodeMap.values().stream().sorted().iterator();
+        Iterator<Node> iter = graph.nodeMap.values().stream().sorted().iterator();
         Node node;
         while (iter.hasNext()) {
             node = iter.next();
             out.writeInt(node.id);
+            out.writeInt(node.playerId);
+            out.writeInt(node.sequenceId);
             out.writeFloat(node.x);
             out.writeFloat(node.y);
             out.writeFloat(node.z);
@@ -157,13 +185,13 @@ public class Mod extends Thread implements ModInitializer {
                 color = in.readInt();
                 size = in.readFloat();
 
-                renderer.upsertNode(nodeId, x, y, z, color, size);
+                graph.upsertNode(nodeId, x, y, z, color, size);
             } else if (type == RPC_GRAPH_EDGE) {
                 aId = in.readInt();
                 bId = in.readInt();
                 color = in.readInt();
 
-                renderer.upsertEdge(aId, bId, color);
+                graph.upsertEdge(aId, bId, color);
             } else {
                 break;
             }
@@ -171,10 +199,14 @@ public class Mod extends Thread implements ModInitializer {
     }
 
     public void resetGraph(DataInputStream in, DataOutputStream out) throws IOException {
-        renderer.reset();
+        graph.reset();
     }
 
     public void getObstructions(DataInputStream in, DataOutputStream out) throws IOException {
         // TODO: Ray cast between nodes to get obstructions https://fabricmc.net/wiki/tutorial:pixel_raycast
+    }
+
+    public static Mod getInstance() {
+        return instance;
     }
 }

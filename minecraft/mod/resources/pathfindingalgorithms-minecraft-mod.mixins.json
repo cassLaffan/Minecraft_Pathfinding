@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.casslaffan.pathfindingalgorithms.minecraft.mod.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+    "ClientPlayNetworkHandlerMixin",
+    "MixinClientPlayerEntity"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
