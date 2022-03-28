@@ -36,6 +36,7 @@ public class ClientCommands {
         d.register(literal("reset").executes(this::reset));
         d.register(literal("hide").executes(this::hide));
         d.register(literal("blind").executes(this::blind));
+        d.register(literal("colour").executes(this::colour));
         d.register(literal("interval").then(argument("ms", IntegerArgumentType.integer(1)).executes(this::interval)));
         d.register(literal("range").then(argument("blocks", DoubleArgumentType.doubleArg(1)).executes(this::range)));
         d.register(literal("setid").then(argument("id", IntegerArgumentType.integer(1)).executes(this::setid)));
@@ -53,6 +54,7 @@ public class ClientCommands {
             /reset - delete all edges
             /hide - hide all nodes and edges
             /blind - toggle a blinding effect
+            /colour - don't like the point colors? randomize them
             /interval <int:ms> - set the time between recording the next point in ms
             /range <float:blocks> - set the maximum range in blocks that you can communicate data
             /setid <int:id> - set the player id for multi-player communication
@@ -100,6 +102,16 @@ public class ClientCommands {
             p.addStatusEffect(
                 new StatusEffectInstance(StatusEffects.BLINDNESS, 300 * 20, 0, false, false)
             );
+        }
+
+        return 0;
+    }
+
+    private int colour(CommandContext<FabricClientCommandSource> c) {
+        Util.colorModifier = Util.r.nextInt();
+
+        for (Node n : graph.nodeMap.values()) {
+            n.color = Util.getPlayerNodeColor(n.playerId) >>> 8;
         }
 
         return 0;
