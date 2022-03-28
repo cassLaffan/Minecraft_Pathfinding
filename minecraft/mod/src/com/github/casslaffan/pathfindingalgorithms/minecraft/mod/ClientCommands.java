@@ -39,6 +39,7 @@ public class ClientCommands {
         d.register(literal("interval").then(argument("ms", IntegerArgumentType.integer(1)).executes(this::interval)));
         d.register(literal("range").then(argument("blocks", DoubleArgumentType.doubleArg(1)).executes(this::range)));
         d.register(literal("setid").then(argument("id", IntegerArgumentType.integer(1)).executes(this::setid)));
+        d.register(literal("jitter").then(argument("factor", DoubleArgumentType.doubleArg(0)).executes(this::jitter)));
         d.register(literal("dump").then(argument("name", StringArgumentType.string()).executes(this::dump)));
         d.register(literal("load").then(argument("name", StringArgumentType.string()).executes(this::load)));
     }
@@ -55,6 +56,7 @@ public class ClientCommands {
             /interval <int:ms> - set the time between recording the next point in ms
             /range <float:blocks> - set the maximum range in blocks that you can communicate data
             /setid <int:id> - set the player id for multi-player communication
+            /jitter <float:factor> - set the jitter factor (uses normal distributed random)
             /dump <name:string> - dump a file with the name to the minecraft folder
             /load <name:string> - load a file with the name from the minecraft folder
             dump format (sorted by playerId and nodeId): name.txt
@@ -127,6 +129,11 @@ public class ClientCommands {
 
         Node.clientPlayerId = pId;
         Node.clientSequenceId = seqId;
+        return 0;
+    }
+
+    private int jitter(CommandContext<FabricClientCommandSource> c) {
+        mod.jitterFactor = c.getArgument("factor", double.class);
         return 0;
     }
 

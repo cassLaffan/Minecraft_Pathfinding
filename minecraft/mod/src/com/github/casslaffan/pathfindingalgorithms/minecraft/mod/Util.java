@@ -19,6 +19,6 @@ public class Util {
     }
 
     static int getPlayerNodeColor(int playerId) {
-        return Color.HSBtoRGB(Math.floorMod(playerId * 1163, 360) / (float) 360, 1f, 1f) << 8;
+        return Color.HSBtoRGB(Math.floorMod(playerId * 1879, 360) / (float) 360, 1f, 1f) << 8;
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.Random;
 import java.util.concurrent.*;
 
 @Environment(EnvType.CLIENT)
@@ -23,12 +24,14 @@ public class Mod extends Thread implements ModInitializer {
     ClientCommands clientCommands;
     RpcCommands rpcCommands;
 
+    Random r = new Random();
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     ScheduledFuture<?> recordHandler;
 
     Vec3d lastPos = new Vec3d(0.0, 0.0, 0.0);
     boolean recording = false;
-    int intervalMs = 500;
+    int intervalMs = 250;
+    double jitterFactor = 0.8;
 
     @Override
     public void onInitialize() {
@@ -53,12 +56,13 @@ public class Mod extends Thread implements ModInitializer {
         if (mc.player == null) return;
 
         String statusText = String.format(
-                "[%s]%s id:%d seq:%d interval:%dms range:%.1f help:/pf",
+                "[%s]%s id:%d seq:%d interval:%dms jitter:%.2f range:%.1f help:/pf",
                 recording ? "Recording" : "Paused",
-                graph.hidden ? "(HIDDEN)" : "",
+                graph.hidden ? " (HIDDEN)" : "",
                 Node.clientPlayerId,
                 Node.clientSequenceId,
                 intervalMs,
+                jitterFactor,
                 radio.range
         );
 
@@ -72,7 +76,7 @@ public class Mod extends Thread implements ModInitializer {
             Vec3d currPos = mc.player.getPos();
 
             if (!currPos.isInRange(lastPos, 0.1)) {
-                Node node = new Node(currPos);
+                Node node = new Node(currPos.add(r.nextGaussian()* jitterFactor, Math.abs(r.nextGaussian()* jitterFactor), r.nextGaussian()* jitterFactor));
                 graph.addNode(node);
                 radio.sendNode(node);
             }
