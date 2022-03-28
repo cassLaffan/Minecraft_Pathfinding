@@ -10,6 +10,10 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import static net.minecraft.text.Text.of;
@@ -21,6 +25,8 @@ import static net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.arg
 
 public class ClientCommands {
     Mod mod = Mod.getInstance();
+    Graph graph = mod.graph;
+    Radio radio = mod.radio;
 
     void registerCommands(CommandDispatcher<FabricClientCommandSource> d) {
         d.register(literal("pf").executes(this::pf));
@@ -34,6 +40,7 @@ public class ClientCommands {
         d.register(literal("range").then(argument("blocks", DoubleArgumentType.doubleArg(1)).executes(this::range)));
         d.register(literal("setid").then(argument("id", IntegerArgumentType.integer(1)).executes(this::setid)));
         d.register(literal("dump").then(argument("name", StringArgumentType.string()).executes(this::dump)));
+        d.register(literal("load").then(argument("name", StringArgumentType.string()).executes(this::load)));
     }
 
     private int pf(CommandContext<FabricClientCommandSource> c) {
@@ -47,7 +54,11 @@ public class ClientCommands {
             /blind - toggle a blinding effect
             /interval <int:ms> - set the time between recording the next point in ms
             /range <float:blocks> - set the maximum range in blocks that you can communicate data
-            /setid <int:id> - set the player id for multi-player communication""";
+            /setid <int:id> - set the player id for multi-player communication
+            /dump <name:string> - dump a file with the name to the minecraft folder
+            /load <name:string> - load a file with the name from the minecraft folder
+            dump format (sorted by playerId and nodeId): name.txt
+            playerId nodeId x y z""";
 
         c.getSource().sendFeedback(of(help));
         return 0;
@@ -64,17 +75,17 @@ public class ClientCommands {
     }
 
     private int delete(CommandContext<FabricClientCommandSource> c) {
-        mod.graph.delete();
+        graph.delete();
         return 0;
     }
 
     private int reset(CommandContext<FabricClientCommandSource> c) {
-        mod.graph.reset();
+        graph.reset();
         return 0;
     }
 
     private int hide(CommandContext<FabricClientCommandSource> c) {
-        mod.graph.toggleHidden();
+        graph.toggleHidden();
         return 0;
     }
 
@@ -100,15 +111,15 @@ public class ClientCommands {
     }
 
     private int range(CommandContext<FabricClientCommandSource> c) {
-        mod.radio.range = c.getArgument("blocks", double.class);;
+        radio.range = c.getArgument("blocks", double.class);;
         return 0;
     }
 
     private int setid(CommandContext<FabricClientCommandSource> c) {
         int pId = c.getArgument("id", int.class);
-        int seqId = 1;
+        int seqId = 0;
 
-        for (Node n : mod.graph.nodeMap.values()) {
+        for (Node n : graph.nodeMap.values()) {
             if (n.playerId == pId && n.sequenceId > seqId) {
                 seqId = n.sequenceId;
             }
@@ -120,8 +131,56 @@ public class ClientCommands {
     }
 
     private int dump(CommandContext<FabricClientCommandSource> c) {
-        c.getSource().sendFeedback(of(FabricLoader.getInstance().getConfigDir().toString()));
-        c.getSource().sendFeedback(of(FabricLoader.getInstance().getGameDir().toString()));
+        mod.recording = false;
+        String name = c.getArgument("name", String.class);
+
+        var outFile = FabricLoader.getInstance().getGameDir().resolve(name + ".txt").toString();
+
+        try (var w = new PrintWriter(new FileWriter(outFile))) {
+            Iterator<Node> iter = graph.nodeMap.values().stream().sorted().iterator();
+            Node node;
+            while (iter.hasNext()) {
+                node = iter.next();
+                w.printf("%d %d %f %f %f\n", node.playerId, node.sequenceId, node.x, node.y, node.z);
+            }
+
+            w.flush();
+        } catch (Exception e) {
+            c.getSource().sendFeedback(of(e.toString()));
+            return 1;
+        }
+
+        return 0;
+    }
+
+    private int load(CommandContext<FabricClientCommandSource> c) {
+        mod.recording = false;
+        String name = c.getArgument("name", String.class);
+
+        var inFile = FabricLoader.getInstance().getGameDir().resolve(name + ".txt");
+
+        int pId, sId;
+        float x, y, z;
+
+        try (var s = new Scanner(inFile)) {
+            while (s.hasNextInt()) {
+                pId = s.nextInt();
+                sId = s.nextInt();
+                x = s.nextFloat();
+                y = s.nextFloat();
+                z = s.nextFloat();
+
+                graph.addNode(new Node((pId << 16) | (sId), x, y, z));
+
+                if (pId == Node.clientPlayerId && sId > Node.clientSequenceId) {
+                    Node.clientSequenceId = sId;
+                }
+            }
+        } catch (Exception e) {
+            c.getSource().sendFeedback(of(e.toString()));
+            return 1;
+        }
+
         return 0;
     }
 }
