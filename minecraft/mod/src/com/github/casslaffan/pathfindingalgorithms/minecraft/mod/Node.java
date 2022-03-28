@@ -6,9 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public class Node implements Comparable<Node> {
-    private static final Random random = new Random();
-    public static int clientSequenceId = 0;
-    public static int clientPlayerId = random.nextInt() >>> 17;
+    public static int clientSequenceId = 1;
+    public static int clientPlayerId = 1;
 
     int id;
     int playerId;

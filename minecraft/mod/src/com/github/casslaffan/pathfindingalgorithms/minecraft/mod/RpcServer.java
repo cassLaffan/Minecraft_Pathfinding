@@ -24,7 +24,7 @@ public class RpcServer extends Thread {
         }
     }
 
-    public void register(byte type, Handler handler) {
+    public void registerHandler(byte type, Handler handler) {
         handlers.put(type, handler);
     }
 
