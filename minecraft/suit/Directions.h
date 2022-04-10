@@ -1,11 +1,11 @@
-#ifndef _SUIT_H
-#define _SUIT_H
+#ifndef _DIRECTIONS_H
+#define _DIRECTIONS_H
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "Includes.h"
 #include <windows.h>
 #include <math.h>
+#include "Includes.h"
 #include "Graph.h"
 #include "GraphRecreation.h"
 #include "Stack.h"

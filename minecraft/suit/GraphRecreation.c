@@ -2,6 +2,17 @@
 #include <stdlib.h>
 #include "GraphRecreation.h"
 
+
+/*
+* This is the most basic of the path recreation algorithms. 
+* It takes the last element in the adjacency array for the
+* first node as the next element in the most "efficient" path
+* back. This naive approach works for only one player, and always 
+* works under the assumption that the absolute latest node that 
+* exists in an adjacency array is the correct one. 
+* 
+* Works as a good sanity check for other algorithms.
+*/
 struct Stack* simplePathRecreation(struct Graph* graph) {
 	findAdjecencies(graph);
 	printGraph(graph);

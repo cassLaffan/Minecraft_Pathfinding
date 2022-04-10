@@ -7,7 +7,7 @@
 #include<winsock2.h>
 
 #include "Graph.h"
-#include "Suit.h"
+#include "Directions.h"
 
 #pragma comment(lib,"ws2_32.lib")
 
