@@ -16,7 +16,7 @@ struct Graph* createGraph(){
 struct Node* createNode(int id, float x, float y, float z){
     struct Node* node = malloc(sizeof(struct Node));
     if (node == NULL) {
-        printf("Failure lmao\n");
+        printf("How did you fuck this up? You're just creating a node. All the info is there! Ridiculous.\n");
     }
     else {
         node->ID = id; //by default
@@ -32,15 +32,23 @@ struct Node* createNode(int id, float x, float y, float z){
     return node;
 }
 
+/*
+* It occured to me that it would make my life so much easier if
+* I reversed the direction of the node edges. Think about it:
+* Having them go backwards means I don't have to search from every
+* starting node. Instead, by virtue of how A* works, it'll find the 
+* closest exit node.
+*/
 void addNode(struct Graph* graph, struct Node* node){
     if (graph->used == 0){
         graph->nodes[0] = node;
         graph->used++;
     }
     else{
-        graph->nodes[graph->used - 1]->adjacencyArray[0] = node; //-1 is because the adjacency array of the previous node is being set
-        graph->nodes[graph->used - 1]->adjacent++;
+        // Now the ordering is node_n -> node_{n-1} instead of node_{n-1} -> node_n
         graph->nodes[graph->used] = node;
+        graph->nodes[graph->used]->adjacencyArray[0] = graph->nodes[graph->used - 1]; 
+        graph->nodes[graph->used]->adjacent++;
         graph->used++;
     }
 }

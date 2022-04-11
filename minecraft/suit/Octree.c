@@ -199,7 +199,7 @@ void recurseOctree(struct Octree* octree, struct Node* node) {
     //base case: has reached a leaf with nodes
     if (octree->leaf) {
         for (int i = 0; i < octree->nodeNum; i++) {
-            if (distance(node, octree->nodes[i]) < 4 && !inAdjacencies(node, octree->nodes[i]) && node->ID != octree->nodes[i]->ID && node->ID < octree->nodes[i]->ID) {
+            if (distance(node, octree->nodes[i]) < 4 && !inAdjacencies(node, octree->nodes[i]) && node->ID != octree->nodes[i]->ID && node->ID >= octree->nodes[i]->ID) {
                 node->adjacencyArray[node->adjacent] = octree->nodes[i];
                 node->adjacent++;
             }
@@ -208,7 +208,6 @@ void recurseOctree(struct Octree* octree, struct Node* node) {
     //recursive case: must recurse through the children
     else if(octree->children[0]){
         for (int i = 0; i < 8; i++) {
-            printf("Xbound: %f\n", octree->children[i]->bounds->xmax);
             //check bounds, eliminate octants that aren't needed
             if (isInBounds(octree->children[i]->bounds, node)  || checkNearbyOctants(octree->children[i]->bounds, node)) {
                 recurseOctree(octree->children[i], node);
