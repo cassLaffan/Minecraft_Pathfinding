@@ -17,21 +17,21 @@ struct Stack* simplePathRecreation(struct Graph* graph) {
 	findAdjecencies(graph);
 	printGraph(graph);
 	struct Stack* path = createStack(graph->used);
+	struct Stack* pathProper = createStack(graph->used);
 	//Current node ID
-	int currID = graph->nodes[0]->ID;
+	int currID = graph->nodes[graph->used-1]->ID;
 	//Number of elements in the current node
-	int elements = graph->nodes[0]->adjacent;
+	int elements = graph->nodes[graph->used-1]->adjacent;
 
 	do {
 		push(path, graph->nodes[currID]);
 		elements = graph->nodes[currID]->adjacent - 1;
-		if (currID == graph->used - 1) {
-			break;
-		}
-		else {
+		if (currID != 0) {
 			currID = graph->nodes[currID]->adjacencyArray[elements]->ID;
 		}
-	} while (currID <= graph->used - 1);
+	} while (currID > 0);
 	
-	return path;
+	pathProper = reverseStack(path);
+
+	return pathProper;
 }

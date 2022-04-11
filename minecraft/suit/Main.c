@@ -39,13 +39,14 @@ int main() {
 
 	mcStartUpsertGraph();
 
-	for (int i = pathBack->top; i > 0; i--) {
+	for (int i = pathBack->top - 1; i > 0; i--) {
 		current = pathBack->array[i];
 		next = pathBack->array[i - 1];
-		printf("%d->%d\n", next->ID, current->ID);
+		printf("%d->%d\n", current->ID, next->ID);
 		mcUpsertNode(current->ID, 0, 0, 0, GREEN, 0.025);
 		mcUpsertEdge(next->ID, current->ID, GREEN);
 	}
+
 	// Upsert last node (`next` in the last iteration is never drawn)
 	current = pathBack->array[0];
 	mcUpsertNode(current->ID, 0, 0, 0, GREEN, 0.025);
