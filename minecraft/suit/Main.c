@@ -1,4 +1,3 @@
-#include "Directions.h"
 #include "MinecraftClient.h"
 
 int main() {
@@ -16,11 +15,13 @@ int main() {
 
 	mcResetGraph();
 	mcGetNodes(graph);
+	printf("At least we have connected.");
 
 	int WHITE = 0xFF'FF'FF'FF; // RGBA
 	int GREEN = 0x00'FF'00'FF;
 
 	mcStartUpsertGraph();
+
 
 	for (int i = 0; i < graph->used; i++) {
 		struct Node* node = graph->nodes[i];
@@ -32,7 +33,7 @@ int main() {
 
 	printGraph(graph);
 
-	struct Stack* pathBack = simplePathRecreation(graph);
+	struct Stack* pathBack = aStarRecreation(graph);
 	struct Node* current;
 	struct Node* next;
 
@@ -48,8 +49,7 @@ int main() {
 	}
 
 	// Upsert last node (`next` in the last iteration is never drawn)
-	current = pathBack->array[0];
-	mcUpsertNode(current->ID, 0, 0, 0, GREEN, 0.025);
+	mcUpsertNode(pathBack->array[0]->ID, 0, 0, 0, GREEN, 0.025);
 
 	mcStopUpsertGraph();
 

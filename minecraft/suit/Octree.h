@@ -27,11 +27,6 @@ struct Octree {
 };
 
 /*
-* Returns the distance between two nodes.
-*/
-float distance(struct Node* first, struct Node* second);
-
-/*
 * Creates a new bounds object based on a node's location and returns the bounds object.
 */
 void makeBounds(struct Bounds* bound, struct Graph* graph);

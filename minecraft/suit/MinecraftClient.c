@@ -109,7 +109,7 @@ void mcGetNodes(struct Graph* graph) {
 		y = mcRecvFloat();
 		z = mcRecvFloat();
 
-		addNode(graph, createNode(id, x, y, z));
+		addNode(graph, createNode(id, 0, i, x, y, z));
 	}
 }
 

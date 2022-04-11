@@ -5,12 +5,14 @@
 //#include <winsock2.h>
 
 #include "Graph.h"
+#include "Directions.h"
 
 int mcInit();
 int mcConnect(int port);
 int mcClose();
 
 void mcGetLocation(struct Location* location);
+int mcGetPlayerID();
 void mcGetNodes(struct Graph* graph);
 
 void mcStartUpsertGraph();

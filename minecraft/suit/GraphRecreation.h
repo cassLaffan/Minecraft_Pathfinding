@@ -4,7 +4,8 @@
 #include "Graph.h"
 #include "Stack.h"
 #include "Octree.h"
+#include "Queue.h"
 
-struct Stack* simplePathRecreation(struct Graph* graph);
+struct Stack* aStarRecreation(struct Graph* graph);
 
 #endif
