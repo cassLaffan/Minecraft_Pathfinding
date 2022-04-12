@@ -43,7 +43,7 @@ int main() {
 	for (int i = pathBack->top - 1; i > 0; i--) {
 		current = pathBack->array[i];
 		next = pathBack->array[i - 1];
-		printf("%d->%d\n", current->ID, next->ID);
+		printf("%d->%d\n", current->sequenceID, next->sequenceID);
 		mcUpsertNode(current->ID, 0, 0, 0, GREEN, 0.025);
 		mcUpsertEdge(next->ID, current->ID, GREEN);
 	}
@@ -58,7 +58,6 @@ int main() {
 
 	freeStack(pathBack);
 	free(graph);
-	remove("ARAIG_VisualizationInformation.txt");
 
 	return 0;
 }
