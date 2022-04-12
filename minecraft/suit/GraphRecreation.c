@@ -25,12 +25,9 @@ struct Stack* aStarRecreation(struct Graph* graph) {
 
 	//Creates an empty queue for the A* algorithm
 	struct Queue* priorityQueue = createQueue(graph->used * 8);
-	int place = 0;
-	int length = 0;
 
 	//Add the first node to the queue with an h value of 0
 	struct Node* u = graph->nodes[graph->used - 1];
-	struct Stack* path = createStack(graph->used);
 	enqueue(priorityQueue, u, 0);
 
 	while (!isEmpty(priorityQueue)) {
@@ -60,6 +57,9 @@ struct Stack* aStarRecreation(struct Graph* graph) {
 			}
 		}
 	}
+
+	// Creates the stack necessary to navigate back.
+	struct Stack* path = createStack(graph->used);
 
 	push(path, u);
 	while (u != graph->nodes[graph->used - 1]){
