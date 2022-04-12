@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include "GraphRecreation.h"
 
+void computeH(struct Graph* graph) {
+	
+}
+
+// Default A* algorithm which uses the Euclidean distance heuristic
 struct Stack* aStarRecreation(struct Graph* graph) {
 	//Creates the adjecencies by using the octree
 	findAdjecencies(graph);
@@ -12,34 +17,35 @@ struct Stack* aStarRecreation(struct Graph* graph) {
 	int place = 0;
 	int length = 0;
 
-	//Add the first node to the queue with a distance to itself of 0
+	//Add the first node to the queue with an h value of 0
 	struct Stack* path = createStack(graph->used);
-	enqueue(priorityQueue, graph->nodes[0], 0);
+	enqueue(priorityQueue, graph->nodes[graph->used-1], 0);
 
 	while (!isEmpty(priorityQueue)) {
 		//dequeues whatever node has top priority
 		struct Node* u = dequeue(priorityQueue);
 		printf("Sequence ID: %d\n", u->sequenceID);
+		// means it has found one of the enterences/exits
 		if (u->sequenceID == 0) {
 			break;
 		}
 
-		//for each next node connected to this node, we check its distance from the final node
-		//The euclidean heuristic is what makes it A*
+
 		for (int i = 0; i < u->adjacent; i++) {
-			if (distance(u->adjacencyArray[i], u) < distance(u->adjacencyArray[i], u->adjacencyArray[i]->previous)) {
+			if (distance(u->adjacencyArray[i], u) < u->g) {
 				u->adjacencyArray[i]->previous = u;
-				u->adjacencyArray[i]->currentDistance = (u->adjacencyArray[i]->currentDistance - distance(u->adjacencyArray[i], u->adjacencyArray[i]->previous)) + distance(u->adjacencyArray[i], u);
-			}
-			if (!u->adjacencyArray[i]->visited) {
-				u->adjacencyArray[i]->visited = 1;
-				enqueue(priorityQueue, u->adjacencyArray[i], distance(u->adjacencyArray[i], graph->nodes[graph->used - 1]));
+				//updating the cost to get to node u
+				u->adjacencyArray[i]->g = (u->adjacencyArray[i]->g - distance(u->adjacencyArray[i], u->adjacencyArray[i]->previous)) + distance(u->adjacencyArray[i], u);
+				u->adjacencyArray[i]->f = u->adjacencyArray[i]->g + u->adjacencyArray[i]->h;
+				enqueue(priorityQueue, u->adjacencyArray[i], u->adjacencyArray[i]->f);
+				if (u->visited) {
+					u->adjacencyArray[i]->reExpansions++;
 				}
 			}
-
 		}
 
 	struct Stack* newPath = createStack(graph->used);
+
 
 	return newPath;
 }

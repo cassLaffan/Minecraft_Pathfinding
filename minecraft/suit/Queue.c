@@ -33,7 +33,7 @@ int isFull(struct Queue* queue) {
 //node is to the exit
 void enqueue(struct Queue* queue, struct Node* node, float p) {
     if (!isFull(queue)) {
-        node->priority = p;
+        node->f = p;
         queue->array[queue->size] = node;
         queue->size++;
     }
@@ -46,7 +46,7 @@ struct Node* dequeue(struct Queue* queue) {
         int max = 0;
 
         for (int i = 0; i < queue->size; i++) {
-            if (queue->array[max]->priority < queue->array[max]->priority) {
+            if (queue->array[max]->f < queue->array[max]->f) {
                 max = i;
             }
         }

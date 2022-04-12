@@ -9,29 +9,39 @@
 * Graph is dynamic because lord only knows when the person will stop walking and turn around.
 */
 struct Node {
-    //ID for quick index lookup
+    //IDs for quick lookup
     int ID;
     int userID;
     int sequenceID;
+
     //The adjacent nodes
     struct Node** adjacencyArray;
-    //Node pathway, important for Dijkstra
-    struct Node* previous;
-    float currentDistance;
-    float priority;
     //Number of adjacent nodes
     int adjacent;
+    // Necessary for finding the path in the end
+    struct Node* previous;
+
     //coordinates
     float x;
     float y;
     float z;
-    //1 or 0
     int hasObstacle;
-    int visited;
+
+    // for A*
+    int visited; // 1 or 0
+    int reExpansions;
+    // Cost to get there from the start
+    float g;
+    float h;
+    // f has replaced "priority" for clearer meaning in the context of A*
+    float f;
+
 };
 
 struct Graph {
     struct Node* nodes[N];
+    // necessary array for keeping track of starting points; used for computing h values.
+    struct Node** starts;
     int used;
     int numUsers;
 };

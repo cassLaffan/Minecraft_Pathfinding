@@ -100,16 +100,17 @@ void mcGetNodes(struct Graph* graph) {
 
 	int len = mcRecvInt();
 	int id;
+	int seq;
 	float x, y, z;
 	for (int i = 0; i < len; i++) {
-		mcRecvInt();
-		mcRecvInt();
 		id = mcRecvInt();
+		seq = mcRecvInt();
+		mcRecvInt();
 		x = mcRecvFloat();
 		y = mcRecvFloat();
 		z = mcRecvFloat();
 
-		addNode(graph, createNode(id, 0, i, x, y, z));
+		addNode(graph, createNode(id, 0, seq, x, y, z));
 	}
 }
 

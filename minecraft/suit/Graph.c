@@ -5,6 +5,7 @@
 
 struct Graph* createGraph() {
     struct Graph* graph = malloc(sizeof(struct Graph));
+    graph->starts = malloc(sizeof(struct Node*) * N);;
     graph->used = 0;
     return graph;
 }
@@ -21,17 +22,25 @@ struct Node* createNode(int ID, int userID, int sequenceID, float x, float y, fl
     else {
         node->ID = ID;
         node->userID = userID;
+        // The sequence number which indicates its location in a given user's path.
+        // 0 is the start of a user's journey/
         node->sequenceID = sequenceID;
+        node->previous = malloc(sizeof(struct Node*));
+
         node->x = x;
         node->y = y;
         node->z = z;
         node->adjacent = 0;
-        node->visited = 0;
         //Now populated in the Octree algorithm
         node->adjacencyArray = malloc(sizeof(struct Node*) * N);
-        node->previous = malloc(sizeof(struct Node));
-        node->currentDistance = 0;
         node->hasObstacle = 0;
+
+        node->f = 0;
+        node->g = 0;
+        // The average Euclidean distance from node to each goal (if there is more than 1)
+        node->h = 0;
+        node->reExpansions = 0;
+        node->visited = 0;
     }
     return node;
 }
@@ -59,6 +68,12 @@ void addNode(struct Graph* graph, struct Node* node){
         graph->nodes[graph->used] = node;
         graph->nodes[graph->used]->adjacencyArray[0] = graph->nodes[graph->used - 1]; 
         graph->nodes[graph->used]->adjacent++;
+        // previous is necessary because it allows the algorithm to walk through the resulting path. I wonder
+        // if this eliminates the stack? We will see.
+        graph->nodes[graph->used - 1]->previous = graph->nodes[graph->used];
+        //g cost to get to this node, will be updated as A* does its thing
+        graph->nodes[graph->used]->g = distance(graph->nodes[graph->used], graph->nodes[graph->used]->previous) + graph->nodes[graph->used]->g;
+        graph->used++;
     }
 }
 
