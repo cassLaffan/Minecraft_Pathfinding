@@ -37,7 +37,7 @@ struct Node* createNode(int ID, int userID, int sequenceID, float x, float y, fl
         node->isFinish = 0;
 
         node->f = 0;
-        node->g = 0;
+        node->g = FLT_MAX;
         // The average Euclidean distance from node to each goal (if there is more than 1)
         node->h = 0;
         node->reExpansions = 0;

@@ -4,7 +4,7 @@
 
 //current heuristic is the average of the distances a node has to each enterence/exit node.
 void computeH(struct Graph* graph) {
-	for (int i = 0; i < graph->used; i++) {
+	for (int i = graph->used - 1; i >= 0; i--) {
 		float sum = 0;
 
 		for (int j = 0; j < graph->numUsers; j++) {
@@ -42,7 +42,7 @@ struct Stack* aStarRecreation(struct Graph* graph) {
 
 
 		for (int i = 0; i < u->adjacent; i++) {
-			if (distance(u->adjacencyArray[i], u) < u->g) {
+			if (!u->adjacencyArray[i]->visited || u->adjacencyArray[i]->g + distance(u->adjacencyArray[i], u) < u->adjacencyArray[i]->g) {
 				u->adjacencyArray[i]->previous = u;
 				//updating the cost to get to node u
 				u->adjacencyArray[i]->g = u->adjacencyArray[i]->previous->g + distance(u->adjacencyArray[i], u);

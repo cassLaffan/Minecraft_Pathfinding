@@ -37,7 +37,7 @@ int main() {
 	struct Node* current;
 	struct Node* next;
 
-
+	printGraph(graph);
 	mcStartUpsertGraph();
 
 	for (int i = pathBack->top - 1; i > 0; i--) {
