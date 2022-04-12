@@ -49,6 +49,7 @@ int main() {
 	}
 
 	// Upsert last node (`next` in the last iteration is never drawn)
+	// Breaks upon finding an empty stack. Maybe I should ass some error checking?
 	mcUpsertNode(pathBack->array[0]->ID, 0, 0, 0, GREEN, 0.025);
 
 	mcStopUpsertGraph();

@@ -104,8 +104,8 @@ void mcGetNodes(struct Graph* graph) {
 	float x, y, z;
 	for (int i = 0; i < len; i++) {
 		id = mcRecvInt();
-		seq = mcRecvInt();
 		mcRecvInt();
+		seq = mcRecvInt();
 		x = mcRecvFloat();
 		y = mcRecvFloat();
 		z = mcRecvFloat();

@@ -7,6 +7,7 @@ struct Graph* createGraph() {
     struct Graph* graph = malloc(sizeof(struct Graph));
     graph->starts = malloc(sizeof(struct Node*) * N);;
     graph->used = 0;
+    graph->numUsers = 0;
     return graph;
 }
 
@@ -33,7 +34,7 @@ struct Node* createNode(int ID, int userID, int sequenceID, float x, float y, fl
         node->adjacent = 0;
         //Now populated in the Octree algorithm
         node->adjacencyArray = malloc(sizeof(struct Node*) * N);
-        node->hasObstacle = 0;
+        node->isFinish = 0;
 
         node->f = 0;
         node->g = 0;
@@ -75,6 +76,11 @@ void addNode(struct Graph* graph, struct Node* node){
         graph->nodes[graph->used]->g = distance(graph->nodes[graph->used], graph->nodes[graph->used]->previous) + graph->nodes[graph->used]->g;
         graph->used++;
     }
+    // Adds it to the array of starting points if its sequence ID is 0
+    if (node->sequenceID == 0) {
+        graph->starts[graph->numUsers] = node;
+        graph->numUsers++;
+    }
 }
 
 void addOtherGraph(struct Graph* current, struct Graph* other) {
@@ -98,9 +104,9 @@ int inAdjacencies(struct Node* first, struct Node* second) {
 void printGraph(struct Graph* graph) {
     for (int i = 0; i < graph->used; i++) {
         struct Node* node = graph->nodes[i];
-        printf("Node: %f, %f, %f, %d, index: %d\n", node->x, node->y, node->z, node->hasObstacle, node->sequenceID);
+        printf("Node: %f, %f, %f, %d, index: %d\n", node->x, node->y, node->z, node->isFinish, node->sequenceID);
         for (int j = 0; j < node->adjacent; j++) {
-            printf("Adjacent to: %f, %f, %f, %d\, index: %d \n", node->adjacencyArray[j]->x, node->adjacencyArray[j]->y, node->adjacencyArray[j]->z, node->adjacencyArray[j]->hasObstacle, node->adjacencyArray[j]->sequenceID);
+            printf("Adjacent to: %f, %f, %f, %d\, index: %d \n", node->adjacencyArray[j]->x, node->adjacencyArray[j]->y, node->adjacencyArray[j]->z, node->adjacencyArray[j]->isFinish, node->adjacencyArray[j]->sequenceID);
         }
     }
 }

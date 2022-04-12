@@ -25,7 +25,7 @@ struct Node {
     float x;
     float y;
     float z;
-    int hasObstacle;
+    int isFinish;
 
     // for A*
     int visited; // 1 or 0
