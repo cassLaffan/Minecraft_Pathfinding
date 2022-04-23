@@ -1,7 +1,5 @@
 #ifndef _GRAPH_H
 #define _GRAPH_H
-#include <time.h>
-#include <float.h>
 #include "Includes.h"
 #define N 10000
 

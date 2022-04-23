@@ -6,6 +6,7 @@
 
 #include "Graph.h"
 #include "Directions.h"
+#include "Metrics.h"
 
 int mcInit();
 int mcConnect(int port);

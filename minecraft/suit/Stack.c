@@ -1,6 +1,3 @@
-#include <limits.h> 
-#include <stdio.h> 
-#include <stdlib.h> 
 #include "Stack.h"
 
 struct Stack* createStack(int capacity) {

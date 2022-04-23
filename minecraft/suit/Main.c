@@ -37,7 +37,19 @@ int main() {
 	struct Node* current;
 	struct Node* next;
 
-	printGraph(graph);
+	printf("Total physical memory used: %llu \n", getTotal(1));
+	printf("Total virtual memory used: %llu \n", getTotal(0));
+	//printf("Total CPU used: %lf", getCurrentCPU());
+
+	printf("Number of unique expansions: %d\n", graph->expansions);
+	printf("Number of unique expansions: %d\n", graph->reExpansions);
+
+	//printGraph(graph);
+
+
+	// Not necessary right now
+
+	
 	mcStartUpsertGraph();
 
 	for (int i = pathBack->top - 1; i > 0; i--) {
@@ -54,10 +66,8 @@ int main() {
 
 	mcStopUpsertGraph();
 
-	giveDirections(pathBack);
-
-	printf("Number of unique expansions: %d\n", graph->expansions);
-	printf("Number of unique expansions: %d\n", graph->reExpansions);
+	//giveDirections(pathBack);
+	
 
 	freeStack(pathBack);
 	free(graph);

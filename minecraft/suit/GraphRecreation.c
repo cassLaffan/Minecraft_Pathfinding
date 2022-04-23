@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "Includes.h"
 #include "GraphRecreation.h"
 
 //current heuristic is the average of the distances a node has to each enterence/exit node.
