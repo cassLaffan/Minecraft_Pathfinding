@@ -8,6 +8,8 @@ struct Graph* createGraph() {
     graph->starts = malloc(sizeof(struct Node*) * N);;
     graph->used = 0;
     graph->numUsers = 0;
+    graph->expansions = 0;
+    graph->reExpansions = 0;
     return graph;
 }
 
@@ -40,7 +42,6 @@ struct Node* createNode(int ID, int userID, int sequenceID, float x, float y, fl
         node->g = FLT_MAX;
         // The average Euclidean distance from node to each goal (if there is more than 1)
         node->h = 0;
-        node->reExpansions = 0;
         node->visited = 0;
     }
     return node;

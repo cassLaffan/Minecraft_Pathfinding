@@ -30,7 +30,6 @@ struct Node {
 
     // for A*
     int visited; // 1 or 0
-    int reExpansions;
     // Cost to get there from the start
     float g;
     float h;
@@ -45,6 +44,8 @@ struct Graph {
     struct Node** starts;
     int used;
     int numUsers;
+    int expansions;
+    int reExpansions;
 };
 
 /*

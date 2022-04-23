@@ -49,9 +49,10 @@ struct Stack* aStarRecreation(struct Graph* graph) {
 				u->adjacencyArray[i]->f = u->adjacencyArray[i]->g + u->adjacencyArray[i]->h;
 				enqueue(priorityQueue, u->adjacencyArray[i], u->adjacencyArray[i]->f);
 				if (u->visited) {
-					u->adjacencyArray[i]->reExpansions++;
+					graph->reExpansions++;
 				}
 				else {
+					graph->expansions++;
 					u->visited = 1;
 				}
 			}

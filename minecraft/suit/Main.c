@@ -56,6 +56,9 @@ int main() {
 
 	giveDirections(pathBack);
 
+	printf("Number of unique expansions: %d\n", graph->expansions);
+	printf("Number of unique expansions: %d\n", graph->reExpansions);
+
 	freeStack(pathBack);
 	free(graph);
 
