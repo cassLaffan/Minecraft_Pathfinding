@@ -195,7 +195,7 @@ void recurseOctree(struct Octree* octree, struct Node* node) {
     //base case: has reached a leaf with nodes
     if (octree->leaf) {
         for (int i = 0; i < octree->nodeNum; i++) {
-            if (distance(node, octree->nodes[i]) < 4 && !inAdjacencies(node, octree->nodes[i]) && node->ID != octree->nodes[i]->ID && node->ID >= octree->nodes[i]->ID) {
+            if (distance(node, octree->nodes[i]) < 4 && !inAdjacencies(node, octree->nodes[i]) && node->ID >= octree->nodes[i]->ID) {
                 node->adjacencyArray[node->adjacent] = octree->nodes[i];
                 node->adjacent++;
             }

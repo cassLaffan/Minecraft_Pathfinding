@@ -7,7 +7,7 @@
 #include <math.h>
 #include "Includes.h"
 #include "Graph.h"
-#include "GraphRecreation.h"
+#include "AStar.h"
 #include "Stack.h"
 
 struct Location {

@@ -1,5 +1,5 @@
 #include "Includes.h"
-#include "GraphRecreation.h"
+#include "AStar.h"
 
 //current heuristic is the average of the distances a node has to each enterence/exit node.
 void computeH(struct Graph* graph) {
@@ -15,7 +15,7 @@ void computeH(struct Graph* graph) {
 }
 
 // Default A* algorithm which uses the Euclidean distance heuristic
-struct Stack* aStarRecreation(struct Graph* graph) {
+struct Stack* aStarRecreation(struct Graph* graph, int weight) {
 	//Creates the adjecencies by using the octree
 	findAdjecencies(graph);
 
@@ -45,7 +45,7 @@ struct Stack* aStarRecreation(struct Graph* graph) {
 				u->adjacencyArray[i]->previous = u;
 				//updating the cost to get to node u
 				u->adjacencyArray[i]->g = u->adjacencyArray[i]->previous->g + distance(u->adjacencyArray[i], u);
-				u->adjacencyArray[i]->f = u->adjacencyArray[i]->g + u->adjacencyArray[i]->h;
+				u->adjacencyArray[i]->f = u->adjacencyArray[i]->g + weight * u->adjacencyArray[i]->h;
 				enqueue(priorityQueue, u->adjacencyArray[i], u->adjacencyArray[i]->f);
 				if (u->visited) {
 					graph->reExpansions++;
