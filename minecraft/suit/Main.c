@@ -1,4 +1,5 @@
 #include "Utilities/MinecraftClient.h"
+#include "Utilities/OpenFile.h"
 #include "Utilities/MinecraftStartup.h"
 #include "Utilities/Directions.h"
 
@@ -8,19 +9,7 @@ int main() {
 	//taking out minecraft connectivity for now
 	//startup(graph);
 
-	FILE* file;
-	fopen_s(&file, "Data Sets/test_points.txt", "r");
-	char line[256];
-
-	int nodeID, sequenceID;
-	float x, y, z;
-
-	do {
-		fscanf_s(file, "%d %d %f %f %f", &nodeID, &sequenceID, &x, &y, &z);
-		addNode(graph, createNode(nodeID, 0, sequenceID, x, y, z));
-	} while (fgets(line, sizeof(line), file));
-
-	fclose(file);
+	openAndUseFile(graph);
 
 	struct Stack* pathBack = aStarRecreation(graph, 1);
 	struct Node* current;
