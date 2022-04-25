@@ -1,10 +1,10 @@
 #ifndef _ASTAR_H
 #define _ASTAR_H
-#include "Includes.h"
-#include "Graph.h"
-#include "Stack.h"
-#include "Octree.h"
-#include "Queue.h"
+#include "../Includes.h"
+#include "../Data Structures/Graph.h"
+#include "../Data Structures/Stack.h"
+#include "../Data Structures/Octree.h"
+#include "../Data Structures/Queue.h"
 #include "Heuristic.h"
 
 /*

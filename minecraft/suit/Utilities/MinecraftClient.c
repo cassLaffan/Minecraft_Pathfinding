@@ -6,7 +6,7 @@
 #include<stdio.h>
 #include<winsock2.h>
 
-#include "Graph.h"
+#include "../Data Structures/Graph.h"
 #include "Directions.h"
 
 #pragma comment(lib,"ws2_32.lib")

@@ -1,6 +1,6 @@
 #ifndef _GRAPH_H
 #define _GRAPH_H
-#include "Includes.h"
+#include "../Includes.h"
 #define N 10000
 
 /*

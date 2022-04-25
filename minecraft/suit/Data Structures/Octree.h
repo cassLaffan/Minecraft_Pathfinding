@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "Includes.h"
+#include "../Includes.h"
 #include "Graph.h"
 #define M 4
 

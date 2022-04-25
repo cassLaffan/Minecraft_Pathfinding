@@ -1,15 +1,4 @@
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "Queue.h"
-#include "Graph.h"
-
-/*
-* My pride and joy has gone from a beautiful circular queue to a
-* priority queue. Lesson learned at 1:00 in the morning: these two
-* data structures aren't compatible with sanity.
-*/
 
 struct Queue* createQueue(int capacity) {
     struct Queue* queue = malloc(sizeof(struct Queue));
@@ -29,8 +18,6 @@ int isFull(struct Queue* queue) {
     return (queue->size == queue->capacity);
 }
 
-//p (for priority) = a combination of closest node and heuristic, which is how close the
-//node is to the exit
 void enqueue(struct Queue* queue, struct Node* node, float p) {
     if (!isFull(queue)) {
         node->f = p;

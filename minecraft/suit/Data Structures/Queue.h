@@ -1,7 +1,6 @@
-#pragma once
 #ifndef _QUEUE_H
 #define _QUEUE_H
-#include "Includes.h"
+#include "../Includes.h"
 #include "Graph.h"
 
 struct Queue {

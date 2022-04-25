@@ -1,4 +1,4 @@
-#include "MinecraftClient.h"
+#include "Utilities/MinecraftClient.h"
 
 int main() {
 	struct Graph* graph = createGraph();
@@ -35,7 +35,7 @@ int main() {
 	*/
 
 	FILE* file;
-	fopen_s(&file, "test_points.txt", "r");
+	fopen_s(&file, "Data Sets/test_points.txt", "r");
 	char line[256];
 
 	int nodeID, sequenceID;
@@ -48,7 +48,7 @@ int main() {
 
 	fclose(file);
 
-	struct Stack* pathBack = RBFS(graph);
+	struct Stack* pathBack = aStarRecreation(graph, 1);
 	struct Node* current;
 	struct Node* next;
 
