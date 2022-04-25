@@ -16,6 +16,7 @@ float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 		// need a meaningful g value
 		if (distance(node, node->adjacencyArray[i]) + node->g < node->adjacencyArray[i]->g) {
 			node->adjacencyArray[i]->g = distance(node, node->adjacencyArray[i]) + node->g;
+			node->adjacencyArray[i]->previous = node;
 		}
 		float f = node->adjacencyArray[i]->g + node->adjacencyArray[i]->h;
 
