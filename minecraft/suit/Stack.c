@@ -45,6 +45,15 @@ struct Stack* reverseStack(struct Stack* original) {
         push(stack, node);
     }
     freeStack(original);
-    printf("%d\n", stack->top);
+    stack->top--;
     return stack;
+}
+
+int find(struct Stack* stack, struct Node* node) {
+    for (int i = 0; i < stack->top; i++) {
+        if (stack->array[i] == node) {
+            return 1;
+        }
+    }
+    return 0;
 }

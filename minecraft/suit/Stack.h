@@ -22,4 +22,7 @@ void freeStack(struct Stack* stack);
 /*Just reverses the stack. Useful for current direction of edges.*/
 struct Stack* reverseStack(struct Stack* original);
 
+//Needed for IDA* also useful in general
+int find(struct Stack* stack, struct Node* node);
+
 #endif

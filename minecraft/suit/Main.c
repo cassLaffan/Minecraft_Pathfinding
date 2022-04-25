@@ -48,11 +48,16 @@ int main() {
 
 	fclose(file);
 
-	struct Stack* pathBack = RBFS(graph);
+	struct Stack* path = IDAStar(graph);
 	struct Node* current;
 	struct Node* next;
 
 	//cStartUpsertGraph();
+
+	printGraph(graph);
+
+	// Only for IDA*
+	struct Stack* pathBack = reverseStack(path);
 
 	for (int i = pathBack->top; i > 0; i--) {
 		current = pathBack->array[i];

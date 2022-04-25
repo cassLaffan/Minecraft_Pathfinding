@@ -6,6 +6,7 @@
 #include "GBFS.h"
 #include "Stack.h"
 #include "RBFS.h"
+#include "IDAStar.h"
 
 struct Location {
 	float x;

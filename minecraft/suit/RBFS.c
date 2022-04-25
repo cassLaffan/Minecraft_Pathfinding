@@ -30,7 +30,6 @@ struct Node* RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 
 
 	for (int i = 1; i < node->adjacent; i++) {
-
 		// need a meaningful g value
 		if (node->adjacencyArray[i]->g == FLT_MAX) {
 			node->adjacencyArray[i]->g = distance(node, node->adjacencyArray[i]) + node->g;
@@ -47,40 +46,55 @@ struct Node* RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 
 	selectionSort(node);
 
+	int index = 0;
 	struct Node* best = node->adjacencyArray[0];
+	struct Node* result = node->adjacencyArray[0];
 	struct Node* alternative = best;
 
-	if (node->adjacent > 0){
-		alternative = node->adjacencyArray[1];
-	}
+	//ADD PREVIOUS MODIFICATION AND WAY TO WORK WAY BACK UP RECURSION
+	while (result != NULL && !result->isFinish && index < node->adjacent) {
 
-	while (!best->isFinish && best != NULL) {
+		if (node->adjacencyArray[node->adjacent - 1] != best) {
+			alternative = node->adjacencyArray[index + 1];
+		}
+
 		if (node->adjacencyArray[0]->f > limit) {
 			return NULL;
 		}
 
-		if (alternative->f < limit) {
-			if (alternative->visited) {
-				graph->reExpansions++;
-			}
-			else {
-				graph->expansions++;
-				alternative->visited = 1;
-			}
-			best = RBFSHelper(graph, best, alternative->f);
+		if (best->visited) {
+			graph->reExpansions++;
 		}
 		else {
-			if (alternative->visited) {
-				graph->reExpansions++;
-			}
-			else {
-				graph->expansions++;
-				alternative->visited = 1;
-			}
-			best = RBFSHelper(graph, best, limit);
+			graph->expansions++;
+			best->visited = 1;
 		}
+
+		if (alternative->f < limit) {
+			result = RBFSHelper(graph, best, alternative->f);
+		}
+		else {
+			result = RBFSHelper(graph, best, limit);
+		}
+
+		if (!result) {
+			return result;
+		}
+
+		else if (result->isFinish) {
+			printf("Flag\n");
+			node->isFinish = 1;
+			best->previous = node;
+			return node;
+		}
+
+		else {
+			limit = result->f;
+		}
+
+		index++;
+		best = node->adjacencyArray[index];
 	}
-	return best;
 }
 
 struct Stack* RBFS(struct Graph* graph) {
