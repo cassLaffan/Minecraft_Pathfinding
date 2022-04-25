@@ -1,18 +1,4 @@
-#include "Includes.h"
 #include "AStar.h"
-
-//current heuristic is the average of the distances a node has to each enterence/exit node.
-void computeH(struct Graph* graph) {
-	for (int i = graph->used - 1; i >= 0; i--) {
-		float sum = 0;
-
-		for (int j = 0; j < graph->numUsers; j++) {
-			sum += distance(graph->nodes[i], graph->starts[j]);
-		}
-
-		graph->nodes[i]->h = sum / graph->numUsers;
-	}
-}
 
 // Default A* algorithm which uses the Euclidean distance heuristic
 struct Stack* aStarRecreation(struct Graph* graph, int weight) {
@@ -32,7 +18,6 @@ struct Stack* aStarRecreation(struct Graph* graph, int weight) {
 	while (!isEmpty(priorityQueue)) {
 		//dequeues whatever node has top priority
 		u = dequeue(priorityQueue);
-		printf("Sequence ID: %d\n", u->sequenceID);
 		// means it has found one of the enterences/exits
 		if (u->sequenceID == 0) {
 			u->isFinish = 1;

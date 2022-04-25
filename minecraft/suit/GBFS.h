@@ -1,6 +1,10 @@
 #ifndef _GBFS_H
 #define _GBFS_H
 #include "Includes.h"
+#include "Graph.h"
+#include "Stack.h"
+#include "Octree.h"
+#include "Queue.h"
 #include "Heuristic.h"
 
 /*

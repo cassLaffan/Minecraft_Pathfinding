@@ -6,13 +6,12 @@ struct Stack* GBFS(struct Graph* graph) {
 
 	//Computes all the H values
 	computeH(graph);
-	printGraph(graph);
+
 	//Creates an empty queue for the A* algorithm
 	struct Queue* priorityQueue = createQueue(graph->used * 8);
 
 	//Add the first node to the queue with an h value of 0
 	struct Node* u = graph->nodes[graph->used - 1];
-
 	enqueue(priorityQueue, u, 0);
 
 	while (!isEmpty(priorityQueue)) {
@@ -28,6 +27,7 @@ struct Stack* GBFS(struct Graph* graph) {
 		for (int i = 0; i < u->adjacent; i++) {
 			if (!u->adjacencyArray[i]->visited || u->adjacencyArray[i]->g + distance(u->adjacencyArray[i], u) < u->adjacencyArray[i]->g) {
 				u->adjacencyArray[i]->previous = u;
+				//updating the cost to get to node u
 				u->adjacencyArray[i]->g = u->adjacencyArray[i]->previous->g + distance(u->adjacencyArray[i], u);
 				enqueue(priorityQueue, u->adjacencyArray[i], u->adjacencyArray[i]->h);
 				if (u->visited) {

@@ -5,11 +5,7 @@
 #include "Stack.h"
 #include "Octree.h"
 #include "Queue.h"
-
-/*
-* Computes the h values for all the nodes in the graph.
-*/
-void computeH(struct Graph* graph);
+#include "Heuristic.h"
 
 /*
 * Finds the shortest path to an enterence given the current player's starting point.

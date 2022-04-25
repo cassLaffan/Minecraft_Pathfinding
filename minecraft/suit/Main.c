@@ -48,13 +48,9 @@ int main() {
 
 	fclose(file);
 
-	struct Stack* pathBack = aStarRecreation(graph, 1);
+	struct Stack* pathBack = GBFS(graph);
 	struct Node* current;
 	struct Node* next;
-
-
-	// Not necessary right now
-
 
 	//cStartUpsertGraph();
 

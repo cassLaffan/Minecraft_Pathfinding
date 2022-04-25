@@ -8,6 +8,7 @@
 #include "Includes.h"
 #include "Graph.h"
 #include "AStar.h"
+#include "GBFS.h"
 #include "Stack.h"
 
 struct Location {
