@@ -1,6 +1,8 @@
 #ifndef _DIRECTIONS_H
 #define _DIRECTIONS_H
 #include "../Includes.h"
+#include "../Data Structures/Graph.h"
+#include "../Utilities/Metrics.h"
 #include "../Algorithms/AStar.h"
 #include "../Algorithms/GBFS.h"
 #include "../Algorithms/RBFS.h"
