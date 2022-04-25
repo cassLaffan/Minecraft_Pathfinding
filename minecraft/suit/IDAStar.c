@@ -1,26 +1,26 @@
 #include "IDAStar.h"
 
-void searchForPlan(struct Stack* path, struct Node* node) {
+void searchForPlan(struct Graph* graph, struct Stack* path, struct Node* node) {
     push(path, node);//adding the first node
 
     double bound = node->h;
     double flag = 0;
 
     while (1) {
-        flag = searchHelper(path, 0, bound);
+        flag = searchHelper(graph, path, 0, bound);
         if (flag == -1.0) {
             return 1;
         }
-        else if (flag == FLT_MAX) {
+        else if (flag == INFINITY) {
             return -1;
         }
         bound = flag;
     }
 }
 
-float searchHelper(struct Stack* path, float g, float bound){
+float searchHelper(struct Graph* graph, struct Stack* path, float g, float bound){
     struct Node* current = peek(path);
-    float min = FLT_MAX;
+    float min = INFINITY;
     float currH = current->h;
 
     float f = currH + g;
@@ -41,8 +41,16 @@ float searchHelper(struct Stack* path, float g, float bound){
         struct Node* next = current;
 
         if (!find(path, current->adjacencyArray[i])){
+            if (current->adjacencyArray[i]->visited) {
+                graph->reExpansions++;
+            }
+            else {
+                graph->expansions++;
+                current->adjacencyArray[i]->visited = 1;
+            }
+
             push(path, current->adjacencyArray[i]);
-            flag = searchHelper(path, nextG, bound);
+            flag = searchHelper(graph, path, nextG, bound);
             if (flag == -1.0){
                 current->adjacencyArray[i]->previous = current;
                 return -1.0;
@@ -69,7 +77,7 @@ struct Stack* IDAStar(struct Graph* graph) {
 	struct Stack* path = createStack(graph->used * 10);
 
 
-    searchForPlan(path, u);
+    searchForPlan(graph, path, u);
 
     //reverseStack(path);
 

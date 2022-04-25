@@ -12,7 +12,7 @@
 */
 
 struct Queue* createQueue(int capacity) {
-    struct Queue* queue = malloc(sizeof(struct Queue*));
+    struct Queue* queue = malloc(sizeof(struct Queue));
 
     queue->capacity = capacity;
     queue->array = malloc(queue->capacity * sizeof(struct Node*));

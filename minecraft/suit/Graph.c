@@ -40,7 +40,7 @@ struct Node* createNode(int ID, int userID, int sequenceID, float x, float y, fl
 
         node->f = 0;
         // For A* and WA*. Adjusted elsewhere
-        node->g = sequenceID == 0 ? 0 : FLT_MAX;
+        node->g = sequenceID == 0 ? 0 : INFINITY;
         // The average Euclidean distance from node to each goal (if there is more than 1)
         node->h = 0;
         node->visited = 0;

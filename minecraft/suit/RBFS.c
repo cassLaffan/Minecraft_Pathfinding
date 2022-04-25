@@ -1,67 +1,44 @@
 #include "RBFS.h"
 
-void swapNodes(struct Node* first, struct Node* second) {
-	struct Node* temp = first;
-	first = second;
-	second = temp;
-}
-
-void selectionSort(struct Node* node) {
-	int min;
-	for (int i = 0; i < node->adjacent - 1; i++) {
-		min = i;
-
-		for (int j = i + 1; j < node->adjacent; j++)
-			if (node->adjacencyArray[j] < node->adjacencyArray[min])
-				min = j;
-
-		swapNodes(&node->adjacencyArray[min], &node->adjacencyArray[i]);
-	}
-}
-
-
 // This algorithm is simplified because I know that the only nodes without successors are the goal nodes
 // And the function checks for that first
-struct Node* RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
-	if(node->sequenceID == 0){
-		node->isFinish = 1;
-		return node;
-	}
+float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 
+	struct Queue* priorityQueue = createQueue(graph->used);
 
-	for (int i = 1; i < node->adjacent; i++) {
+	for (int i = 0; i < node->adjacent; i++) {
+		if(node->adjacencyArray[i]->sequenceID == 0){
+			node->adjacencyArray[i]->isFinish = 0;
+			node->adjacencyArray[i]->previous = node;
+			node->isFinish = 1;
+			return node->f;
+		}
 		// need a meaningful g value
-		if (node->adjacencyArray[i]->g == FLT_MAX) {
+		if (distance(node, node->adjacencyArray[i]) + node->g < node->adjacencyArray[i]->g) {
 			node->adjacencyArray[i]->g = distance(node, node->adjacencyArray[i]) + node->g;
 		}
+		float f = node->adjacencyArray[i]->g + node->adjacencyArray[i]->h;
 
 		//successor.f <- max(successor.g + successor.h, node.f))
-		if (node->f > (node->adjacencyArray[i]->g + node->adjacencyArray[i]->h)) {
+		if (node->f > f) {
 			node->adjacencyArray[i]->f = node->f;
 		}
 		else {
-			node->adjacencyArray[i]->f = node->adjacencyArray[i]->g + node->adjacencyArray[i]->h;
+			node->adjacencyArray[i]->f = f;
 		}
+		enqueue(priorityQueue, node->adjacencyArray[i], node->adjacencyArray[i]->f);
 	}
 
-	selectionSort(node);
 
-	int index = 0;
-	struct Node* best = node->adjacencyArray[0];
-	struct Node* result = node->adjacencyArray[0];
-	struct Node* alternative = best;
-
-	//ADD PREVIOUS MODIFICATION AND WAY TO WORK WAY BACK UP RECURSION
-	while (result != NULL && !result->isFinish && index < node->adjacent) {
-
-		if (node->adjacencyArray[node->adjacent - 1] != best) {
-			alternative = node->adjacencyArray[index + 1];
+	struct Node* best = dequeue(priorityQueue);
+	struct Node* temp;
+	float alternative;
+	
+	while (best->f < INFINITY && best->f <= limit && !best->isFinish) {
+		if (best->f > limit) {
+			return best->f;
 		}
-
-		if (node->adjacencyArray[0]->f > limit) {
-			return NULL;
-		}
-
+		//metrics
 		if (best->visited) {
 			graph->reExpansions++;
 		}
@@ -70,31 +47,30 @@ struct Node* RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 			best->visited = 1;
 		}
 
-		if (alternative->f < limit) {
-			result = RBFSHelper(graph, best, alternative->f);
+		//algorithm
+		if (isEmpty(priorityQueue)) {
+			best->f = RBFSHelper(graph, best, limit);
+			break;
 		}
 		else {
-			result = RBFSHelper(graph, best, limit);
+			//messy work around for peaking
+			temp = dequeue(priorityQueue);
+			alternative = temp->f;
+			enqueue(priorityQueue, temp, temp->f);
+			best->f = RBFSHelper(graph, best, alternative);
 		}
 
-		if (!result) {
-			return result;
-		}
-
-		else if (result->isFinish) {
-			printf("Flag\n");
-			node->isFinish = 1;
+		if (best->isFinish) {
+			printf("Finish");
 			best->previous = node;
-			return node;
+			node->isFinish = 1;
+			return best->f;
 		}
-
-		else {
-			limit = result->f;
-		}
-
-		index++;
-		best = node->adjacencyArray[index];
+		//enqueue(priorityQueue, best, best->f);
+		best = dequeue(priorityQueue);
 	}
+	freeQueue(priorityQueue);
+	return best->f;
 }
 
 struct Stack* RBFS(struct Graph* graph) {
@@ -106,9 +82,9 @@ struct Stack* RBFS(struct Graph* graph) {
 
 	struct Node* u = graph->nodes[graph->used - 1];
 	u->f = u->h;
+	u->g = 0;
 
-	float limit = FLT_MAX;
-
+	float limit = INFINITY;
 	RBFSHelper(graph, u, limit);
 	
 
