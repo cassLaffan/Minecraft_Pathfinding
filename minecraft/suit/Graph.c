@@ -5,7 +5,7 @@
 
 struct Graph* createGraph() {
     struct Graph* graph = malloc(sizeof(struct Graph));
-    graph->starts = malloc(sizeof(struct Node*) * N);;
+    graph->starts = malloc(sizeof(struct Node*) * N);
     graph->used = 0;
     graph->numUsers = 0;
     graph->expansions = 0;
@@ -39,7 +39,8 @@ struct Node* createNode(int ID, int userID, int sequenceID, float x, float y, fl
         node->isFinish = 0;
 
         node->f = 0;
-        node->g = FLT_MAX;
+        // For A* and WA*. Adjusted elsewhere
+        node->g = sequenceID == 0 ? 0 : FLT_MAX;
         // The average Euclidean distance from node to each goal (if there is more than 1)
         node->h = 0;
         node->visited = 0;

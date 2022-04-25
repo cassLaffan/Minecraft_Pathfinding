@@ -48,13 +48,13 @@ int main() {
 
 	fclose(file);
 
-	struct Stack* pathBack = GBFS(graph);
+	struct Stack* pathBack = RBFS(graph);
 	struct Node* current;
 	struct Node* next;
 
 	//cStartUpsertGraph();
 
-	for (int i = pathBack->top - 1; i > 0; i--) {
+	for (int i = pathBack->top; i > 0; i--) {
 		current = pathBack->array[i];
 		next = pathBack->array[i - 1];
 		printf("%d->%d\n", current->sequenceID, next->sequenceID);
@@ -70,7 +70,7 @@ int main() {
 
 	//giveDirections(pathBack);
 
-	printGraph(graph);
+	//printGraph(graph);
 
 	printf("Total physical memory used: %llu MB\n", getTotal(1) / 1024 / 1024);
 	printf("Total virtual memory used: %llu MB\n", getTotal(0) / 1024 / 1024);

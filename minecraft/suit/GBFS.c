@@ -43,7 +43,6 @@ struct Stack* GBFS(struct Graph* graph) {
 
 	// Creates the stack necessary to navigate back.
 	struct Stack* path = createStack(graph->used);
-
 	push(path, u);
 	while (u != graph->nodes[graph->used - 1]) {
 		u = u->previous;
