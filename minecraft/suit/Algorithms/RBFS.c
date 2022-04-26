@@ -7,6 +7,7 @@ float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 	struct Queue* priorityQueue = createQueue(graph->used);
 
 	for (int i = 0; i < node->adjacent; i++) {
+		euclideanComputeH(graph, node->adjacencyArray[i]);
 		if(node->adjacencyArray[i]->sequenceID == 0){
 			node->adjacencyArray[i]->isFinish = 0;
 			node->adjacencyArray[i]->previous = node;
@@ -62,7 +63,6 @@ float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 		}
 
 		if (best->isFinish) {
-			printf("Finish");
 			best->previous = node;
 			node->isFinish = 1;
 			return best->f;
