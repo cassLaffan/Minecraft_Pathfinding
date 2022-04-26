@@ -11,7 +11,7 @@ int main() {
 
 	openAndUseFile(graph);
 
-	struct Stack* pathBack = aStarRecreation(graph, 1);
+	struct Stack* pathBack = RBFS(graph);
 	struct Node* current;
 	struct Node* next;
 
@@ -37,8 +37,6 @@ int main() {
 	mcStopUpsertGraph();
 
 	//giveDirections(pathBack);
-
-	printGraph(graph);
 
 	printf("Total physical memory used: %llu MB\n", getTotal(1) / 1024 / 1024);
 	printf("Total virtual memory used: %llu MB\n", getTotal(0) / 1024 / 1024);

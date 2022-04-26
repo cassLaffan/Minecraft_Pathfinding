@@ -36,6 +36,7 @@ float searchHelper(struct Graph* graph, struct Stack* path, float g, float bound
     }
 
     for (int i = 0; i < current->adjacent; i++){
+        euclideanComputeH(graph, current->adjacencyArray[i]);
         float cost = distance(current, current->adjacencyArray[i]);
         float nextG = g + cost;
         struct Node* next = current;
@@ -67,11 +68,10 @@ float searchHelper(struct Graph* graph, struct Stack* path, float g, float bound
 struct Stack* IDAStar(struct Graph* graph) {
 	//Creates the adjecencies by using the octree
 	findAdjecencies(graph);
-	//Computes all the H values
-    euclideanComputeH(graph);
 
 	//Add the first node to the queue with an h value of 0
 	struct Node* u = graph->nodes[graph->used - 1];
+    euclideanComputeH(graph, u);
 
 	// Creates the stack necessary to navigate back.
 	struct Stack* path = createStack(graph->used * 10);

@@ -78,10 +78,8 @@ struct Stack* RBFS(struct Graph* graph) {
 	//Creates the adjecencies by using the octree
 	findAdjecencies(graph);
 
-	//Computes all the H values
-	euclideanComputeH(graph);
-
 	struct Node* u = graph->nodes[graph->used - 1];
+	euclideanComputeH(graph, u);
 	u->f = u->h;
 	u->g = 0;
 

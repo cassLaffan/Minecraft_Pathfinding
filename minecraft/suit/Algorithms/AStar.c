@@ -6,14 +6,12 @@ struct Stack* aStarRecreation(struct Graph* graph, int weight) {
 	//Creates the adjecencies by using the octree
 	findAdjecencies(graph);
 
-	//Computes all the H values
-	euclideanComputeH(graph);
-
 	//Creates an empty queue for the A* algorithm
 	struct Queue* priorityQueue = createQueue(graph->used * 8);
 
 	//Add the first node to the queue with an h value of 0
 	struct Node* u = graph->nodes[graph->used - 1];
+	euclideanComputeH(graph, u);
 	enqueue(priorityQueue, u, 0);
 
 	while (!isEmpty(priorityQueue)) {
@@ -27,6 +25,7 @@ struct Stack* aStarRecreation(struct Graph* graph, int weight) {
 
 
 		for (int i = 0; i < u->adjacent; i++) {
+			euclideanComputeH(graph, u->adjacencyArray[i]);
 			if (!u->adjacencyArray[i]->visited || u->adjacencyArray[i]->g + distance(u->adjacencyArray[i], u) < u->adjacencyArray[i]->g) {
 				u->adjacencyArray[i]->previous = u;
 				//updating the cost to get to node u
