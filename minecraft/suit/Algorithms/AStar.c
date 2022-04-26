@@ -1,6 +1,7 @@
 #include "AStar.h"
 
-// Default A* algorithm which uses the Euclidean distance heuristic
+// Note: when wanting to deal with the number of nodes preceeding the current node
+// having a weight of 0 < w < 1 will be the way to go
 struct Stack* aStarRecreation(struct Graph* graph, int weight) {
 	//Creates the adjecencies by using the octree
 	findAdjecencies(graph);
