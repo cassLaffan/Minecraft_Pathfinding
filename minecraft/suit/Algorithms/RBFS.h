@@ -3,7 +3,7 @@
 #include "../Includes.h"
 #include "../Data Structures/Graph.h"
 #include "../Data Structures/Stack.h"
-#include "../Data Structures/Octree.h"
+#include "../Data Structures/AdjacencySearch.h"
 #include "../Data Structures/Queue.h"
 #include "EuclideanHeuristic.h"
 #include "ZeroHeuristic.h"

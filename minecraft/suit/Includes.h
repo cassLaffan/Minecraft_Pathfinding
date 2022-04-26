@@ -12,6 +12,7 @@
 #include <limits.h> 
 #include <TCHAR.h>
 #include <pdh.h>
+#include <math.h>
 /*
 * This file is here because it was part of the SDK and I'm afraid to take it out.
 * Now it's more of a "this is where I put all the include calls because it means cleaner other files"

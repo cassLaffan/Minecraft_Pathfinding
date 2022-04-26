@@ -77,7 +77,7 @@ float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 struct Stack* RBFS(struct Graph* graph) {
 	//Creates the adjecencies by using the octree
 	findAdjecencies(graph);
-
+	printf("Flag");
 	struct Node* u = graph->nodes[graph->used - 1];
 	euclideanComputeH(graph, u);
 	u->f = u->h;
