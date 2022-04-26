@@ -8,6 +8,7 @@
 #include "EuclideanHeuristic.h"
 //#include "ZeroHeuristic.h"
 //#include "ManhattanHeuristic.h"
+//#include "EuclideanVariant.h""
 
 /*
 * Finds the shortest path to an enterence given the current player's starting point.

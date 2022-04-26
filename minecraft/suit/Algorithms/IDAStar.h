@@ -8,6 +8,7 @@
 #include "EuclideanHeuristic.h"
 //#include "ZeroHeuristic.h"
 //#include "ManhattanHeuristic.h"
+//#include "EuclideanVariant.h""
 
 // Graph is only included to tally expansions
 void searchForPlan(struct Graph* graph, struct Stack* path, struct Node* node);
