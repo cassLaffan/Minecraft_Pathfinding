@@ -1,12 +1,11 @@
-#include "Heuristic.h"
+#include "ManhattanHeuristic.h"
 
-//current heuristic is the average of the distances a node has to each enterence/exit node.
 void computeH(struct Graph* graph) {
 	for (int i = graph->used - 1; i >= 0; i--) {
 		float sum = 0;
 
 		for (int j = 0; j < graph->numUsers; j++) {
-			sum += distance(graph->nodes[i], graph->starts[j]);
+			sum += abs((graph->nodes[i]->x + graph->starts[j]->x)) + abs((graph->nodes[i]->y + graph->starts[j]->y)) + abs((graph->nodes[i]->z + graph->starts[j]->z));
 		}
 
 		graph->nodes[i]->h = sum / graph->numUsers;

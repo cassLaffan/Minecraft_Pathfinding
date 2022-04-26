@@ -5,7 +5,9 @@
 #include "../Data Structures/Stack.h"
 #include "../Data Structures/Octree.h"
 #include "../Data Structures/Queue.h"
-#include "Heuristic.h"
+#include "EuclideanHeuristic.h"
+//#include "ZeroHeuristic.h"
+//#include "ManhattanHeuristic.h"
 
 // Graph is only included to tally expansions
 void searchForPlan(struct Graph* graph, struct Stack* path, struct Node* node);
