@@ -7,7 +7,7 @@ struct Stack* aStarRecreation(struct Graph* graph, int weight) {
 	findAdjecencies(graph);
 
 	//Computes all the H values
-	computeH(graph);
+	euclideanComputeH(graph);
 
 	//Creates an empty queue for the A* algorithm
 	struct Queue* priorityQueue = createQueue(graph->used * 8);

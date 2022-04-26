@@ -5,7 +5,7 @@ struct Stack* GBFS(struct Graph* graph) {
 	findAdjecencies(graph);
 
 	//Computes all the H values
-	computeH(graph);
+	euclideanComputeH(graph);
 
 	//Creates an empty queue for the A* algorithm
 	struct Queue* priorityQueue = createQueue(graph->used * 8);

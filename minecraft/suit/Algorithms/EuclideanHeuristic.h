@@ -8,7 +8,7 @@
 * This heuristic is the average euclidean distance of a node 
 * from the goal nodes.
 */
-void computeH(struct Graph* graph);
+void euclideanComputeH(struct Graph* graph);
 
 
 #endif

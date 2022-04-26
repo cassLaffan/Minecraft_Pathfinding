@@ -8,7 +8,7 @@
 * This heuristic is the average Manhattan distance of a node
 * from the goal nodes.
 */
-void computeH(struct Graph* graph);
+void manComputeH(struct Graph* graph);
 
 
 #endif

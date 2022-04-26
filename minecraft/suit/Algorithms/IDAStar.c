@@ -68,7 +68,7 @@ struct Stack* IDAStar(struct Graph* graph) {
 	//Creates the adjecencies by using the octree
 	findAdjecencies(graph);
 	//Computes all the H values
-	computeH(graph);
+    euclideanComputeH(graph);
 
 	//Add the first node to the queue with an h value of 0
 	struct Node* u = graph->nodes[graph->used - 1];

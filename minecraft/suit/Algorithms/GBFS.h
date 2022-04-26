@@ -6,8 +6,8 @@
 #include "../Data Structures/Octree.h"
 #include "../Data Structures/Queue.h"
 #include "EuclideanHeuristic.h"
-//#include "ZeroHeuristic.h"
-//#include "ManhattanHeuristic.h"
+#include "ZeroHeuristic.h"
+#include "ManhattanHeuristic.h"
 
 /*
 * Finds the shortest path to an enterence given the current player's starting point.

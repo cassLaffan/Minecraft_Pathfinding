@@ -79,7 +79,7 @@ struct Stack* RBFS(struct Graph* graph) {
 	findAdjecencies(graph);
 
 	//Computes all the H values
-	computeH(graph);
+	euclideanComputeH(graph);
 
 	struct Node* u = graph->nodes[graph->used - 1];
 	u->f = u->h;

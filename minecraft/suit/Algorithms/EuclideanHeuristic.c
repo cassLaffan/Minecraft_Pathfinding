@@ -1,6 +1,6 @@
 #include "EuclideanHeuristic.h"
 
-void computeH(struct Graph* graph) {
+void euclideanComputeH(struct Graph* graph) {
 	for (int i = graph->used - 1; i >= 0; i--) {
 		float sum = 0;
 

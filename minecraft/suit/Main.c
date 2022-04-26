@@ -38,7 +38,7 @@ int main() {
 
 	//giveDirections(pathBack);
 
-	//printGraph(graph);
+	printGraph(graph);
 
 	printf("Total physical memory used: %llu MB\n", getTotal(1) / 1024 / 1024);
 	printf("Total virtual memory used: %llu MB\n", getTotal(0) / 1024 / 1024);

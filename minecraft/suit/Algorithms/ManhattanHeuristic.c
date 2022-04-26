@@ -1,6 +1,6 @@
 #include "ManhattanHeuristic.h"
 
-void computeH(struct Graph* graph) {
+void manComputeH(struct Graph* graph) {
 	for (int i = graph->used - 1; i >= 0; i--) {
 		float sum = 0;
 
