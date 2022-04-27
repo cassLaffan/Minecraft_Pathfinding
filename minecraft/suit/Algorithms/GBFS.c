@@ -1,9 +1,6 @@
 #include "GBFS.h"
 
 struct Stack* GBFS(struct Graph* graph) {
-	//Creates the adjecencies by using the octree
-	findAdjecencies(graph);
-
 	//Creates an empty queue for the A* algorithm
 	struct Queue* priorityQueue = createQueue(graph->used * 8);
 

@@ -11,7 +11,15 @@ int main() {
 
 	openAndUseFile(graph);
 
-	struct Stack* pathBack = RBFS(graph);
+	findAdjecencies(graph);
+
+	clock_t begin = clock();
+
+	struct Stack* pathBack = GBFS(graph);
+
+	clock_t end = clock();
+	double timeSpent = (double)(end - begin) / CLOCKS_PER_SEC;
+
 	struct Node* current;
 	struct Node* next;
 
@@ -44,6 +52,8 @@ int main() {
 
 	printf("Number of unique expansions: %d\n", graph->expansions);
 	printf("Number of re-expansions: %d\n", graph->reExpansions);
+
+	printf("Time expended: %lf\n", timeSpent);
 
 	freeStack(pathBack);
 	free(graph);
