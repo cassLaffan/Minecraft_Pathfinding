@@ -19,7 +19,7 @@ int main() {
 
 	clock_t begin = clock();
 
-	struct Stack* pathBack = aStarRecreation(graph, 0.1);
+	struct Stack* pathBack = aStarRecreation(graph, 1);
 
 	clock_t end = clock();
 	double timeSpent = (double)(end - begin) / CLOCKS_PER_SEC;

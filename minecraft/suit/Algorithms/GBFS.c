@@ -24,12 +24,12 @@ struct Stack* GBFS(struct Graph* graph) {
 				//updating the cost to get to node u
 				u->adjacencyArray[i]->g = u->adjacencyArray[i]->previous->g + distance(u->adjacencyArray[i], u);
 				enqueue(priorityQueue, u->adjacencyArray[i], u->adjacencyArray[i]->h);
-				if (u->visited) {
+				if (u->adjacencyArray[i]->visited) {
 					graph->reExpansions++;
 				}
 				else {
 					graph->expansions++;
-					u->visited = 1;
+					u->adjacencyArray[i]->visited = 1;
 				}
 			}
 		}

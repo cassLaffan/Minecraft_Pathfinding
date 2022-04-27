@@ -24,18 +24,18 @@ struct Stack* aStarRecreation(struct Graph* graph, int weight) {
 		for (int i = 0; i < u->adjacent; i++) {
 			euclideanComputeH(graph, u->adjacencyArray[i]);
 			if (!u->adjacencyArray[i]->visited || u->adjacencyArray[i]->g + distance(u->adjacencyArray[i], u) < u->adjacencyArray[i]->g) {
+				if (u->adjacencyArray[i]->visited) {
+					graph->reExpansions++;
+				}
+				else {
+					graph->expansions++;
+					u->adjacencyArray[i]->visited = 1;
+				}
 				u->adjacencyArray[i]->previous = u;
 				//updating the cost to get to node u
 				u->adjacencyArray[i]->g = u->adjacencyArray[i]->previous->g + distance(u->adjacencyArray[i], u);
 				u->adjacencyArray[i]->f = u->adjacencyArray[i]->g + 10 * u->adjacencyArray[i]->h;
 				enqueue(priorityQueue, u->adjacencyArray[i], u->adjacencyArray[i]->f);
-				if (u->visited) {
-					graph->reExpansions++;
-				}
-				else {
-					graph->expansions++;
-					u->visited = 1;
-				}
 			}
 		}
 	}
