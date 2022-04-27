@@ -4,6 +4,11 @@
 #include "../Data Structures/Graph.h"
 
 /*
+* Computes the weighted average for weighted average Euclidean distance.
+*/
+void calculateWeights(struct Graph* graph);
+
+/*
 * Computes the h values for all the nodes in the graph.
 * This heuristic is the average euclidean distance of a node 
 * from the goal nodes.

@@ -31,6 +31,7 @@ struct Node {
     // Cost to get there from the start
     float g;
     float h;
+    float weightedAverage;
     // f has replaced "priority" for clearer meaning in the context of A*
     float f;
 

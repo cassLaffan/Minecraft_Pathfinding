@@ -43,6 +43,9 @@ struct Node* createNode(int ID, int userID, int sequenceID, float x, float y, fl
         node->g = sequenceID == 0 ? 0 : INFINITY;
         // The average Euclidean distance from node to each goal (if there is more than 1)
         node->h = 0;
+
+        //default weight is 1
+        node->weightedAverage = 1;
         node->visited = 0;
     }
     return node;

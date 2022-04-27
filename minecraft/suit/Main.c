@@ -13,9 +13,13 @@ int main() {
 
 	findAdjecencies(graph);
 
+	float* weights = malloc(sizeof(float) * graph->numUsers);
+
+	calculateWeights(graph);
+
 	clock_t begin = clock();
 
-	struct Stack* pathBack = GBFS(graph);
+	struct Stack* pathBack = aStarRecreation(graph, 0.1);
 
 	clock_t end = clock();
 	double timeSpent = (double)(end - begin) / CLOCKS_PER_SEC;
