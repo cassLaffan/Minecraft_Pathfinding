@@ -34,7 +34,20 @@ struct Node* peek(struct Stack* stack) {
     return !isStackEmpty(stack) ? stack->array[stack->top] : NULL;
 }
 
+
 void freeStack(struct Stack* stack) {
     free(stack->array);
     free(stack);
+}
+
+struct Stack* reverseStack(struct Stack* original) {
+    struct Stack* stack = createStack(original->capacity);
+
+    while (!isStackEmpty(original)) {
+        struct Node* node = pop(original);
+        push(stack, node);
+    }
+    freeStack(original);
+    printf("%d\n", stack->top);
+    return stack;
 }

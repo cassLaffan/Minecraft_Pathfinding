@@ -47,13 +47,13 @@ void getInstructions(float angle) {
 void giveDirections(struct Stack* stack) {
 	struct Location* loc = (struct Location*)malloc(sizeof(struct Location*));
 	mcGetLocation(loc);
-		
+	//why do I need to pop this???? wtf
+	pop(stack);
 	struct Node* node = pop(stack);
 	struct Node* lastNode = node;
 	float angle = 0;
 
 	while (!isStackEmpty(stack)) {
-		printf("%d is the stack's current top index\n", stack->top);
 		mcStartUpsertGraph();
 		mcUpsertNode(node->ID, 0, 0, 0, 0xFF'41'FF'FF, 0.025F);
 		mcUpsertEdge(node->ID, lastNode->ID, 0xFF'41'FF'FF);
@@ -64,10 +64,10 @@ void giveDirections(struct Stack* stack) {
 			angle = relativeToPlayer(loc, node);
 
 			getInstructions(angle);
-			Sleep(100);
+			Sleep(1000);
 			mcGetLocation(loc);
 		}
-		Sleep(5);
+		Sleep(1000);
 		lastNode = node;
 		node = pop(stack);
 		mcGetLocation(loc);

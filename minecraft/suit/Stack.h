@@ -19,5 +19,7 @@ struct Node* pop(struct Stack* stack);
 struct Node* peek(struct Stack* stack);
 
 void freeStack(struct Stack* stack);
+/*Just reverses the stack. Useful for current direction of edges.*/
+struct Stack* reverseStack(struct Stack* original);
 
 #endif

@@ -7,7 +7,7 @@
 #include<winsock2.h>
 
 #include "Graph.h"
-#include "Suit.h"
+#include "Directions.h"
 
 #pragma comment(lib,"ws2_32.lib")
 
@@ -102,6 +102,8 @@ void mcGetNodes(struct Graph* graph) {
 	int id;
 	float x, y, z;
 	for (int i = 0; i < len; i++) {
+		mcRecvInt();
+		mcRecvInt();
 		id = mcRecvInt();
 		x = mcRecvFloat();
 		y = mcRecvFloat();
