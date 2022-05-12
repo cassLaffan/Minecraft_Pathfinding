@@ -29,7 +29,7 @@ int main() {
 
 	//cStartUpsertGraph();
 
-	printGraph(graph);
+	//printGraph(graph);
 
 	// Only for IDA*
 	//struct Stack* pathBack = reverseStack(path);

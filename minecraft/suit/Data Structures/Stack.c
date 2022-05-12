@@ -13,13 +13,12 @@ int isStackFull(struct Stack* stack) {
 }
 
 int isStackEmpty(struct Stack* stack) {
-    return stack->top == -2;
+    return stack->top == -1;
 }
 
 void push(struct Stack* stack, struct Node* node) {
     if (!isStackFull(stack)) {
-        stack->top++;
-        stack->array[stack->top] = node;
+        stack->array[++stack->top] = node;
     }
 }
 

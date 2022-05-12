@@ -1,7 +1,7 @@
 #ifndef _GRAPH_H
 #define _GRAPH_H
 #include "../Includes.h"
-#define N 10000
+#define N 100000
 
 /*
 * The way this graph is structured is that each node has x,y,z coordinates.
