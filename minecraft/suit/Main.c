@@ -1,63 +1,60 @@
-#include "Directions.h"
-#include "MinecraftClient.h"
+#include "Utilities/MinecraftClient.h"
+#include "Utilities/OpenFile.h"
+#include "Utilities/MinecraftStartup.h"
+#include "Utilities/Directions.h"
+#include "Utilities/UserInstructions.h"
 
 int main() {
 	struct Graph* graph = createGraph();
 
-	if (mcInit() != 0) {
-		printf("mcInit error\n");
-		return 1;
-	}
+	//taking out minecraft connectivity for now
+	//startup(graph);
 
-	if (mcConnect(25566) != 0) {
-		printf("mcConnect  error\n");
-		return 1;
-	}
+	openAndUseFile(graph);
 
-	mcResetGraph();
-	mcGetNodes(graph);
+	findAdjecencies(graph);
 
-	int WHITE = 0xFF'FF'FF'FF; // RGBA
-	int GREEN = 0x00'FF'00'FF;
+	calculateWeights(graph);
 
-	mcStartUpsertGraph();
+	clock_t begin = clock();
 
-	for (int i = 0; i < graph->used; i++) {
-		struct Node* node = graph->nodes[i];
-		for (int j = 0; j < node->adjacent; j++) {
-			mcUpsertEdge(node->ID, node->adjacencyArray[j]->ID, WHITE);
-		}
-	}
-	mcStopUpsertGraph();
+	struct Stack* pathBack = run(graph);
 
-	printGraph(graph);
+	clock_t end = clock();
+	double timeSpent = (double)(end - begin) / CLOCKS_PER_SEC;
 
-	struct Stack* pathBack = simplePathRecreation(graph);
 	struct Node* current;
 	struct Node* next;
 
+	//cStartUpsertGraph();
 
-	mcStartUpsertGraph();
-
-	for (int i = pathBack->top - 1; i > 0; i--) {
+	for (int i = pathBack->top; i > 0; i--) {
 		current = pathBack->array[i];
 		next = pathBack->array[i - 1];
-		printf("%d->%d\n", current->ID, next->ID);
-		mcUpsertNode(current->ID, 0, 0, 0, GREEN, 0.025);
-		mcUpsertEdge(next->ID, current->ID, GREEN);
+		printf("%d->%d\n", current->sequenceID, next->sequenceID);
+		//mcUpsertNode(current->ID, 0, 0, 0, GREEN, 0.025);
+		//mcUpsertEdge(next->ID, current->ID, GREEN);
 	}
 
 	// Upsert last node (`next` in the last iteration is never drawn)
-	current = pathBack->array[0];
-	mcUpsertNode(current->ID, 0, 0, 0, GREEN, 0.025);
+	// Breaks upon finding an empty stack. Maybe I should ass some error checking?
+	// mcUpsertNode(pathBack->array[0]->ID, 0, 0, 0, GREEN, 0.025);
 
 	mcStopUpsertGraph();
 
-	giveDirections(pathBack);
+	//giveDirections(pathBack);
+
+	printf("Total physical memory used: %llu MB\n", getTotal(1) / 1024 / 1024);
+	printf("Total virtual memory used: %llu MB\n", getTotal(0) / 1024 / 1024);
+	//printf("Total CPU used: %lf", getCurrentCPU());
+
+	printf("Number of unique expansions: %d\n", graph->expansions);
+	printf("Number of re-expansions: %d\n", graph->reExpansions);
+
+	printf("Time expended: %lf\n", timeSpent);
 
 	freeStack(pathBack);
 	free(graph);
-	remove("ARAIG_VisualizationInformation.txt");
 
 	return 0;
 }

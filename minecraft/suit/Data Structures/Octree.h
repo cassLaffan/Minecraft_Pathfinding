@@ -1,9 +1,6 @@
 #ifndef _OCTREE_H
 #define _OCTREE_H
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include "Includes.h"
+#include "../Includes.h"
 #include "Graph.h"
 #define M 4
 
@@ -25,11 +22,6 @@ struct Octree {
 	int nodeNum;
 	struct Node* nodes[M];
 };
-
-/*
-* Returns the distance between two nodes.
-*/
-float distance(struct Node* first, struct Node* second);
 
 /*
 * Creates a new bounds object based on a node's location and returns the bounds object.

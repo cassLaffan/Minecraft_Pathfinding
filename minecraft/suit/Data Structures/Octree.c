@@ -1,9 +1,5 @@
 #include "Octree.h"
 
-float distance(struct Node* first, struct Node* second) {
-    return sqrt(pow(first->x - second->x, 2) + pow(first->y - second->y, 2) + pow(first->z - second->z, 2));
-}
-
 /*
  * This returns a six element array with each of the bounds for the box
  * The format is: [max x, min x, max y, min y, max z, min z]
@@ -142,7 +138,7 @@ struct Octree* makeOctree(int num, struct Node** nodes, struct Bounds* bounds) {
         for (int i = 0; i < 8; i++) {
             newBoundaries[i] = malloc(sizeof(struct Bounds));
         }
-         
+
         splitOctants(newBoundaries, bounds);
         //recurse into each octant
         for (int i = 0; i < 8; i++) {
@@ -166,7 +162,7 @@ struct Octree* makeOctree(int num, struct Node** nodes, struct Bounds* bounds) {
 
 //Futile attempt to avoid code spaghetti
 int checkNearbyOctants(struct Bounds* bounds, struct Node* node) {
-    
+
     //Do not want to check adjacencies right above or right below. Don't want the firefighter hovering
     //That's witchcraft I'd like to avoid
     struct Node* newNodeOne = createNode(-1, -1, -1, node->x + 2, node->y, node->z);
@@ -174,12 +170,12 @@ int checkNearbyOctants(struct Bounds* bounds, struct Node* node) {
     struct Node* newNodeThree = createNode(-1, -1, -1, node->x, node->y, node->z + 2);
     struct Node* newNodeFour = createNode(-1, -1, -1, node->x, node->y, node->z - 2);
 
-    struct Node* newNodeFive = createNode(-1, -1, -1, node->x + 2, node->y, node->z + 2); 
-    struct Node* newNodeSix = createNode(-1, -1, -1, node->x - 2, node->y, node->z + 2); 
+    struct Node* newNodeFive = createNode(-1, -1, -1, node->x + 2, node->y, node->z + 2);
+    struct Node* newNodeSix = createNode(-1, -1, -1, node->x - 2, node->y, node->z + 2);
     struct Node* newNodeSeven = createNode(-1, -1, -1, node->x + 2, node->y, node->z - 2);
     struct Node* newNodeEight = createNode(-1, -1, -1, node->x - 2, node->y, node->z - 2);
-    
-    int isNear = (isInBounds(bounds, newNodeOne) || isInBounds(bounds, newNodeTwo) || isInBounds(bounds, newNodeThree) || isInBounds(bounds, newNodeFour) 
+
+    int isNear = (isInBounds(bounds, newNodeOne) || isInBounds(bounds, newNodeTwo) || isInBounds(bounds, newNodeThree) || isInBounds(bounds, newNodeFour)
         || isInBounds(bounds, newNodeFive) || isInBounds(bounds, newNodeSix) || isInBounds(bounds, newNodeSeven) || isInBounds(bounds, newNodeEight));
 
     free(newNodeOne);
@@ -199,17 +195,18 @@ void recurseOctree(struct Octree* octree, struct Node* node) {
     //base case: has reached a leaf with nodes
     if (octree->leaf) {
         for (int i = 0; i < octree->nodeNum; i++) {
-            if (distance(node, octree->nodes[i]) < 4 && !inAdjacencies(node, octree->nodes[i]) && node->ID != octree->nodes[i]->ID && node->ID >= octree->nodes[i]->ID) {
+            if (distance(node, octree->nodes[i]) < 4 && !inAdjacencies(node, octree->nodes[i]) && node->ID >= octree->nodes[i]->ID && node->sequenceID != octree->nodes[i]->sequenceID) {
                 node->adjacencyArray[node->adjacent] = octree->nodes[i];
                 node->adjacent++;
             }
         }
     }
     //recursive case: must recurse through the children
-    else if(octree->children[0]){
+    else if (octree->children[0]) {
         for (int i = 0; i < 8; i++) {
             //check bounds, eliminate octants that aren't needed
-            if (isInBounds(octree->children[i]->bounds, node)  || checkNearbyOctants(octree->children[i]->bounds, node)) {
+            //need to add checking nearby octants
+            if (isInBounds(octree->children[i]->bounds, node) || checkNearbyOctants(octree->children[i]->bounds, node)) {
                 recurseOctree(octree->children[i], node);
             }
         }
@@ -222,7 +219,7 @@ void findAdjecencies(struct Graph* graph) {
 
     makeBounds(furthestBounds, graph);
     struct Octree* space = makeOctree(graph->used, graph->nodes, furthestBounds);
-   
+
     for (int i = 0; i < graph->used; i++) {
         recurseOctree(space, graph->nodes[i]);
     }

@@ -1,14 +1,13 @@
 #ifndef _DIRECTIONS_H
 #define _DIRECTIONS_H
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <windows.h>
-#include <math.h>
-#include "Includes.h"
-#include "Graph.h"
-#include "GraphRecreation.h"
-#include "Stack.h"
+#include "../Includes.h"
+#include "../Data Structures/Graph.h"
+#include "../Utilities/Metrics.h"
+#include "../Algorithms/AStarGBFS.h"
+#include "../Algorithms/RBFS.h"
+#include "../Algorithms/IDAStar.h"
+#include "../Data Structures/Graph.h"
+#include "../Data Structures/Stack.h"
 
 struct Location {
 	float x;

@@ -60,7 +60,7 @@ void giveDirections(struct Stack* stack) {
 		mcStopUpsertGraph();
 
 		while (getDistance(loc, node) > 2.0) {
-			printf("Next node: %d\n", node->ID);
+			printf("Next node: %d\n", node->sequenceID);
 			angle = relativeToPlayer(loc, node);
 
 			getInstructions(angle);
