@@ -1,7 +1,10 @@
 #include "RBFS.h"
 
-float RBFSHelper(struct Queue* priorityQueue, struct Stack* stack, struct Graph* graph, struct Node* node, float limit) {
-	float f = 0;
+// This algorithm is simplified because I know that the only nodes without successors are the goal nodes
+// And the function checks for that first
+float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
+
+	struct Queue* priorityQueue = createQueue(graph->used);
 
 	for (int i = 0; i < node->adjacent; i++) {
 		euclideanComputeH(graph, node->adjacencyArray[i]);
@@ -16,7 +19,7 @@ float RBFSHelper(struct Queue* priorityQueue, struct Stack* stack, struct Graph*
 			node->adjacencyArray[i]->g = distance(node, node->adjacencyArray[i]) + node->g;
 			node->adjacencyArray[i]->previous = node;
 		}
-		f = node->adjacencyArray[i]->g + node->adjacencyArray[i]->h;
+		float f = node->adjacencyArray[i]->g + node->adjacencyArray[i]->h;
 
 		//successor.f <- max(successor.g + successor.h, node.f))
 		if (node->f > f) {
@@ -28,12 +31,9 @@ float RBFSHelper(struct Queue* priorityQueue, struct Stack* stack, struct Graph*
 		enqueue(priorityQueue, node->adjacencyArray[i], node->adjacencyArray[i]->f);
 	}
 
-	for (int i = 0; i < node->adjacent; i++) {
-		push(stack, dequeue(priorityQueue));
-	}
 
-
-	struct Node* best = pop(stack);
+	struct Node* best = dequeue(priorityQueue);
+	struct Node* temp;
 	float alternative;
 
 	while (best->f < INFINITY && best->f <= limit && !best->isFinish) {
@@ -50,25 +50,27 @@ float RBFSHelper(struct Queue* priorityQueue, struct Stack* stack, struct Graph*
 		}
 
 		//algorithm
-		if (isStackEmpty(stack) || stack->top == 1) {
-			best->f = RBFSHelper(priorityQueue, stack, graph, best, limit);
+		if (isEmpty(priorityQueue)) {
+			best->f = RBFSHelper(graph, best, limit);
 			break;
 		}
 		else {
 			//messy work around for peaking
-			alternative = stack->array[stack->top - 1]->f;
-;			best->f = RBFSHelper(priorityQueue, stack, graph, best, alternative);
+			temp = dequeue(priorityQueue);
+			alternative = temp->f;
+			enqueue(priorityQueue, temp, temp->f);
+			best->f = RBFSHelper(graph, best, alternative);
 		}
 
 		if (best->isFinish) {
-			printf("GOAL %d\n", best->sequenceID);
 			best->previous = node;
 			node->isFinish = 1;
 			return best->f;
 		}
 		//enqueue(priorityQueue, best, best->f);
-		best = pop(stack);
+		best = dequeue(priorityQueue);
 	}
+	freeQueue(priorityQueue);
 	return best->f;
 }
 
@@ -77,12 +79,9 @@ struct Stack* RBFS(struct Graph* graph) {
 	euclideanComputeH(graph, u);
 	u->f = u->h;
 	u->g = 0;
-	struct Stack* stack = createStack(graph->used);
-	struct Queue* queue = createQueue(graph->used);
-	push(stack, u);
 
 	float limit = INFINITY;
-	RBFSHelper(queue, stack, graph, u, limit);
+	RBFSHelper(graph, u, limit);
 
 
 	// Creates the stack necessary to navigate back.
