@@ -2,6 +2,7 @@
 #include "Utilities/OpenFile.h"
 #include "Utilities/MinecraftStartup.h"
 #include "Utilities/Directions.h"
+#include "Utilities/UserInstructions.h"
 
 int main() {
 	struct Graph* graph = createGraph();
@@ -13,13 +14,11 @@ int main() {
 
 	findAdjecencies(graph);
 
-	float* weights = malloc(sizeof(float) * graph->numUsers);
-
 	calculateWeights(graph);
 
 	clock_t begin = clock();
 
-	struct Stack* pathBack = RBFS(graph);
+	struct Stack* pathBack = run(graph);
 
 	clock_t end = clock();
 	double timeSpent = (double)(end - begin) / CLOCKS_PER_SEC;
@@ -28,11 +27,6 @@ int main() {
 	struct Node* next;
 
 	//cStartUpsertGraph();
-
-	//printGraph(graph);
-
-	// Only for IDA*
-	//struct Stack* pathBack = reverseStack(path);
 
 	for (int i = pathBack->top; i > 0; i--) {
 		current = pathBack->array[i];

@@ -1,5 +1,5 @@
-#ifndef _GBFS_H
-#define _GBFS_H
+#ifndef _ASTAR_H
+#define _ASTAR_H
 #include "../Includes.h"
 #include "../Data Structures/Graph.h"
 #include "../Data Structures/Stack.h"
@@ -11,8 +11,12 @@
 
 /*
 * Finds the shortest path to an enterence given the current player's starting point.
-* Greedy Best First Search (GBFS) is essentially the same as A*, just without the g value.
+* This is a combination of both A*, WA* and GBFS.
+* If weight = 0, the algorithm becomes Dijkstra.
+* gbfs is a flag that checks whether or not the function is GBFS. 
+* For ease of use, 0 means it's GBFS and 1 means it's an A* algorithm.
 */
-struct Stack* GBFS(struct Graph* graph);
+
+struct Stack* aStarGBFS(struct Graph* graph, int weight, int gbfs);
 
 #endif
