@@ -2,7 +2,7 @@
 
 void openAndUseFile(struct Graph* graph) {
 	FILE* file;
-	fopen_s(&file, "Data Sets/three_estern.txt", "r");
+	fopen_s(&file, "Data Sets/OsfjollDataset3.txt", "r");
 	char line[256];
 
 	int nodeID, sequenceID;

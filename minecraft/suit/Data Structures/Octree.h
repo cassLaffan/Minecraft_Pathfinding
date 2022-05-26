@@ -2,7 +2,7 @@
 #define _OCTREE_H
 #include "../Includes.h"
 #include "Graph.h"
-#define M 4
+#define M 10000
 
 struct Bounds {
 	float xmin;
@@ -66,6 +66,6 @@ void recurseOctree(struct Octree* octree, struct Node* node);
 /*
 * Goes through the nodes of the graph to populate adjacency array
 */
-void findAdjecencies(struct Graph* graph);
+void findOctreeAdjecencies(struct Graph* graph);
 
 #endif

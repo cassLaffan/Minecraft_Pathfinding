@@ -8,6 +8,7 @@
 #include "../Algorithms/IDAStar.h"
 #include "../Data Structures/Graph.h"
 #include "../Data Structures/Stack.h"
+#include "../Data Structures/Octree.h"
 
 struct Location {
 	float x;
