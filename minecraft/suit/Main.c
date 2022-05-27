@@ -12,11 +12,16 @@ int main() {
 
 	openAndUseFile(graph);
 
+	clock_t begin = clock();
+
+	// Use at own risk for gigantic datasets. This call can and will make your computer
+	// eat dirt.
+	// findOctreeAdjecencies(graph);
+
 	findAdjecencies(graph);
 
 	calculateWeights(graph);
 
-	clock_t begin = clock();
 
 	struct Stack* pathBack = run(graph);
 

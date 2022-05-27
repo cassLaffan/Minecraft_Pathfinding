@@ -213,7 +213,7 @@ void recurseOctree(struct Octree* octree, struct Node* node) {
     }
 }
 
-void findAdjecencies(struct Graph* graph) {
+void findOctreeAdjecencies(struct Graph* graph) {
     struct Bounds* furthestBounds = malloc(sizeof(struct Bounds));
 
 
