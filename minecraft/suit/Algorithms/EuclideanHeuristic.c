@@ -9,14 +9,20 @@ void calculateWeights(struct Graph* graph) {
 	}
 }
 
-// For classic average Euclidean, weight is 1
+// For classic minimum Euclidean distance from a set of goal nodes
+// Admissible
 void euclideanComputeH(struct Graph* graph, struct Node* node) {
-	float sum = 0;
+	
+	node->h = distance(node, graph->starts[0]);
 
-	for (int j = 0; j < graph->numUsers; j++) {
-		sum += node->weightedAverage * distance(node, graph->starts[j]);
+	for (int j = 1; j < graph->numUsers; j++) {
+		float h = distance(node, graph->starts[j]);
+		
+		if (h < node->h) {
+			node->h = distance(node, graph->starts[j]);
+		}
 	}
 
-	node->h = sum / graph->numUsers;
+	
 	
 }

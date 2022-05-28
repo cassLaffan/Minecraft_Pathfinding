@@ -4,7 +4,7 @@
 // And the function checks for that first
 float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 
-	struct Queue* priorityQueue = createQueue(graph->used);
+	struct Queue* priorityQueue = createQueue(node->adjacent);
 
 	for (int i = 0; i < node->adjacent; i++) {
 		euclideanComputeH(graph, node->adjacencyArray[i]);

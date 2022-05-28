@@ -19,6 +19,7 @@ void searchForPlan(struct Graph* graph, struct Stack* path, struct Node* node) {
 }
 
 float searchHelper(struct Graph* graph, struct Stack* path, float g, float bound){
+    printf("%f\n", bound);
     struct Node* current = peek(path);
     float min = INFINITY;
     float currH = current->h;

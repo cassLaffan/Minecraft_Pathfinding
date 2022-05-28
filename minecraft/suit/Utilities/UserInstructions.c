@@ -1,6 +1,7 @@
 #include "UserInstructions.h"
 
 struct Stack* run(struct Graph* graph) {
+
 	int choice = -1;
 	int weight = 0;
 
@@ -18,21 +19,27 @@ struct Stack* run(struct Graph* graph) {
 		switch (choice) {
 			case 0:
 				// Weight = 0, making it dijkstra, gbfs = 1 making sure g is multiplied by 1
+				findAdjecencies(graph);
 				return aStarGBFS(graph, 0, 1);
 			case 1:
 				// Weight = 1, making it A*, gbfs = 1 making sure g is multiplied by 1
+				findAdjecencies(graph);
 				return aStarGBFS(graph, 1, 1);
 			case 2:
 				printf("Choose a positive weight. If you input 0, you'll just end up with Dijkstra.\n");
 				scanf_s("%d", &weight);
+				findAdjecencies(graph);
 				return aStarGBFS(graph, weight, 1);
 			case 3:
 				// Weight = 1, gbfs = 0 ensuring that g becomes 0
+				findAdjecencies(graph);
 				return aStarGBFS(graph, 1, 1);
 			case 4:
 				printf("This is a you problem if this is a dataset with more than one user.\n");
+				findAdjecencies(graph);
 				return reverseStack(IDAStar(graph));
 			case 5: 
+				findAdjecencies(graph);
 				return RBFS(graph);
 			default:
 				printf("Well screw you, none of those inputs were correct.\n");

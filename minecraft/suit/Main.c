@@ -18,11 +18,6 @@ int main() {
 	// eat dirt.
 	// findOctreeAdjecencies(graph);
 
-	findAdjecencies(graph);
-
-	calculateWeights(graph);
-
-
 	struct Stack* pathBack = run(graph);
 
 	clock_t end = clock();
