@@ -20,7 +20,6 @@ int isFull(struct Queue* queue) {
 
 void enqueue(struct Queue* queue, struct Node* node, float p) {
     if (!isFull(queue)) {
-        node->f = p;
         queue->array[queue->size] = node;
         queue->size++;
     }

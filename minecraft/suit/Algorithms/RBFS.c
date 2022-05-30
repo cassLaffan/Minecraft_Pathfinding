@@ -1,10 +1,31 @@
 #include "RBFS.h"
 
+int getBestNodePosition(struct Node* node) {
+	int index = 0;
+
+	for (int i = 1; i < node->adjacent; i++) {
+		if (node->adjacencyArray[i]->f < node->adjacencyArray[index]->f && !node->adjacencyArray[i]->visited) {
+			index = i;
+		}
+	}
+
+	return index;
+}
+
+int areAllVisited(struct Node* node) {
+	int flag = 0;
+
+	for (int i = 0; i < node->adjacent; i++) {
+		if (node->adjacencyArray[i]->visited)
+			flag++;
+	}
+
+	return flag == node->adjacent - 1;
+}
+
 // This algorithm is simplified because I know that the only nodes without successors are the goal nodes
 // And the function checks for that first
 float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
-
-	struct Queue* priorityQueue = createQueue(node->adjacent);
 
 	for (int i = 0; i < node->adjacent; i++) {
 		euclideanComputeH(graph, node->adjacencyArray[i]);
@@ -28,12 +49,10 @@ float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 		else {
 			node->adjacencyArray[i]->f = f;
 		}
-		enqueue(priorityQueue, node->adjacencyArray[i], node->adjacencyArray[i]->f);
 	}
 
 
-	struct Node* best = dequeue(priorityQueue);
-	struct Node* temp;
+	struct Node* best = node->adjacencyArray[getBestNodePosition(node)];
 	float alternative;
 
 	while (best->f < INFINITY && best->f <= limit && !best->isFinish) {
@@ -50,15 +69,12 @@ float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 		}
 
 		//algorithm
-		if (isEmpty(priorityQueue)) {
+		if (areAllVisited(node)) {
 			best->f = RBFSHelper(graph, best, limit);
 			break;
 		}
 		else {
-			//messy work around for peaking
-			temp = dequeue(priorityQueue);
-			alternative = temp->f;
-			enqueue(priorityQueue, temp, temp->f);
+			alternative = node->adjacencyArray[getBestNodePosition(node)]->f;
 			best->f = RBFSHelper(graph, best, alternative);
 		}
 
@@ -67,10 +83,9 @@ float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 			node->isFinish = 1;
 			return best->f;
 		}
-		//enqueue(priorityQueue, best, best->f);
-		best = dequeue(priorityQueue);
+
+		best = node->adjacencyArray[getBestNodePosition(node)];
 	}
-	freeQueue(priorityQueue);
 	return best->f;
 }
 
