@@ -1,6 +1,7 @@
 #ifndef _GRAPH_H
 #define _GRAPH_H
 #include "../Includes.h"
+#include "Queue.h"
 #define N 100000
 
 /*
@@ -34,6 +35,9 @@ struct Node {
     float weightedAverage;
     // f has replaced "priority" for clearer meaning in the context of A*
     float f;
+
+    // Only for RBFS
+    struct Queue* priorityQueue;
 
 };
 

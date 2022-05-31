@@ -11,3 +11,9 @@ void findAdjecencies(struct Graph* graph) {
 		}
 	}
 }
+
+void addQueues(struct Graph* graph) {
+	for (int i = 0; i < graph->used; i++) {
+		graph->nodes[i]->priorityQueue = createQueue(graph->nodes[i]->adjacent);
+	}
+}
