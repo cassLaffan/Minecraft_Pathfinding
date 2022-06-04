@@ -52,7 +52,6 @@ struct Node* createNode(int ID, int userID, int sequenceID, float x, float y, fl
 }
 
 
-
 float distance(struct Node* first, struct Node* second) {
     return sqrt(pow(first->x - second->x, 2) + pow(first->y - second->y, 2) + pow(first->z - second->z, 2));
 }

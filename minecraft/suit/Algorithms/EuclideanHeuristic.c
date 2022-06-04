@@ -19,10 +19,7 @@ void euclideanComputeH(struct Graph* graph, struct Node* node) {
 		float h = distance(node, graph->starts[j]);
 		
 		if (h < node->h) {
-			node->h = distance(node, graph->starts[j]);
+			node->h = h;
 		}
 	}
-
-	
-	
 }
