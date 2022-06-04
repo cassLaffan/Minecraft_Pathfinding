@@ -5,16 +5,17 @@
 float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 
 	for (int i = 0; i < node->adjacent; i++) {
-		euclideanComputeH(graph, node->adjacencyArray[i]);
 		if (node->adjacencyArray[i]->sequenceID == 0) {
 			node->adjacencyArray[i]->isFinish = 0;
 			node->adjacencyArray[i]->previous = node;
 			node->isFinish = 1;
 			return node->f;
 		}
+		euclideanComputeH(graph, node->adjacencyArray[i]);
 		// need a meaningful g value
-		if (distance(node, node->adjacencyArray[i]) + node->g < node->adjacencyArray[i]->g) {
-			node->adjacencyArray[i]->g = distance(node, node->adjacencyArray[i]) + node->g;
+		float temp_g = distance(node, node->adjacencyArray[i]);
+		if (temp_g + node->g < node->adjacencyArray[i]->g) {
+			node->adjacencyArray[i]->g = temp_g + node->g;
 			node->adjacencyArray[i]->previous = node;
 		}
 		float f = node->adjacencyArray[i]->g + node->adjacencyArray[i]->h;
@@ -28,7 +29,6 @@ float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 		}
 		enqueue(node->priorityQueue, node->adjacencyArray[i], node->adjacencyArray[i]->f);
 	}
-
 
 	struct Node* best = dequeue(node->priorityQueue);
 	struct Node* temp;
@@ -65,7 +65,7 @@ float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 			node->isFinish = 1;
 			return best->f;
 		}
-		//enqueue(priorityQueue, best, best->f);
+		enqueue(node->priorityQueue, best, best->f);
 		best = dequeue(node->priorityQueue);
 	}
 	return best->f;

@@ -14,12 +14,11 @@ void searchForPlan(struct Graph* graph, struct Stack* path, struct Node* node) {
         else if (flag == INFINITY) {
             return -1;
         }
-        bound = flag;
+        bound = 10 * flag;
     }
 }
 
 float searchHelper(struct Graph* graph, struct Stack* path, float g, float bound){
-    printf("%f\n", bound);
     struct Node* current = peek(path);
     float min = INFINITY;
     float currH = current->h;
