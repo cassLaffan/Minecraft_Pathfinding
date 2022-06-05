@@ -17,3 +17,11 @@ void addQueues(struct Graph* graph) {
 		graph->nodes[i]->priorityQueue = createQueue(graph->nodes[i]->adjacent);
 	}
 }
+
+void resetGraph(struct Graph* graph) {
+	for (int i = 0; i < graph->used; i++) {
+		graph->nodes[i]->visited = 0;
+	}
+	graph->expansions = 0;
+	graph->reExpansions = 0;
+}

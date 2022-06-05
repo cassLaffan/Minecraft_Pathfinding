@@ -72,6 +72,8 @@ float RBFSHelper(struct Graph* graph, struct Node* node, float limit) {
 }
 
 struct Stack* RBFS(struct Graph* graph) {
+	clock_t begin = clock();
+
 	addQueues(graph);
 	struct Node* u = graph->nodes[graph->used - 1];
 	euclideanComputeH(graph, u);
@@ -86,6 +88,10 @@ struct Stack* RBFS(struct Graph* graph) {
 	struct Stack* path = createStack(graph->used);
 
 	u = graph->nodes[0];
+
+	clock_t end = clock();
+
+	printf("Time expended for finding the egress path is: %lf\n", (double)(end - begin) / CLOCKS_PER_SEC);
 
 	for (int i = 0; i < graph->numUsers; i++) {
 		u = graph->starts[i]->isFinish ? graph->starts[i] : u;

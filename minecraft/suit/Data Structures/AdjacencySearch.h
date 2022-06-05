@@ -16,4 +16,10 @@ void findAdjecencies(struct Graph* graph);
 */
 void addQueues(struct Graph* graph);
 
+/*
+* Resets adjacencies so that the experiment can be run again.
+*/
+
+void resetGraph(struct Graph* graph);
+
 #endif

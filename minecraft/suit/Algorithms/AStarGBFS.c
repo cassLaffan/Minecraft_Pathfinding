@@ -1,7 +1,8 @@
 #include "AStarGBFS.h"
 
 struct Stack* aStarGBFS(struct Graph* graph, int weight, int gbfs) {
-
+	clock_t begin = clock();
+	
 	//Creates an empty queue for the A* algorithm
 	struct Queue* priorityQueue = createQueue(graph->used * 8);
 
@@ -40,8 +41,12 @@ struct Stack* aStarGBFS(struct Graph* graph, int weight, int gbfs) {
 		}
 	}
 
+	clock_t end = clock();
+
+	printf("Time expended for finding the egress path is: %lf\n", (double)(end - begin) / CLOCKS_PER_SEC);
 	// Creates the stack necessary to navigate back.
 	struct Stack* path = createStack(graph->used);
+
 
 	push(path, u);
 	while (u != graph->nodes[graph->used - 1]){

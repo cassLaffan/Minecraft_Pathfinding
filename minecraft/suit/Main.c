@@ -11,17 +11,13 @@ int main() {
 	//startup(graph);
 
 	openAndUseFile(graph);
-
-	clock_t begin = clock();
+	runAll(graph);
 
 	// Use at own risk for gigantic datasets. This call can and will make your computer
 	// eat dirt.
 	// findOctreeAdjecencies(graph);
-
-	struct Stack* pathBack = run(graph);
-
-	clock_t end = clock();
-	double timeSpent = (double)(end - begin) / CLOCKS_PER_SEC;
+	/*
+	struct Stack* pathBack = runIndividual(graph);
 
 	struct Node* current;
 	struct Node* next;
@@ -31,7 +27,7 @@ int main() {
 	for (int i = pathBack->top; i > 0; i--) {
 		current = pathBack->array[i];
 		next = pathBack->array[i - 1];
-		printf("%d->%d\n", current->sequenceID, next->sequenceID);
+		//printf("%d->%d\n", current->sequenceID, next->sequenceID);
 		//mcUpsertNode(current->ID, 0, 0, 0, GREEN, 0.025);
 		//mcUpsertEdge(next->ID, current->ID, GREEN);
 	}
@@ -48,12 +44,12 @@ int main() {
 	printf("Total virtual memory used: %llu MB\n", getTotal(0) / 1024 / 1024);
 	//printf("Total CPU used: %lf", getCurrentCPU());
 
+	freeStack(pathBack);
+
 	printf("Number of unique expansions: %d\n", graph->expansions);
 	printf("Number of re-expansions: %d\n", graph->reExpansions);
-
-	printf("Time expended: %lf\n", timeSpent);
-
-	freeStack(pathBack);
+	*/
+	
 	free(graph);
 
 	return 0;

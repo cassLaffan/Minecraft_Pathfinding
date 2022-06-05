@@ -74,9 +74,10 @@ struct Stack* IDAStar(struct Graph* graph) {
 	// Creates the stack necessary to navigate back.
 	struct Stack* path = createStack(graph->used * 10);
 
-
+    clock_t begin = clock();
     searchForPlan(graph, path, u);
-
+    clock_t end = clock();
+    printf("Time expended for finding the egress path is: %lf\n", (double)(end - begin) / CLOCKS_PER_SEC);
     //reverseStack(path);
 
 	return path;
