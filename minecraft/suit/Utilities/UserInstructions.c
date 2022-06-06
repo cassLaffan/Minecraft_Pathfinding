@@ -73,12 +73,15 @@ struct Stack* runIndividual(struct Graph* graph) {
 
 void runAll(struct Graph* graph) {
 	clock_t begin, end;
-
-		// Weight = 0, making it dijkstra, gbfs = 1 making sure g is multiplied by 1
+	double trueBegin = 0.0;
+	double trueEnd = 0.0;
+	// Weight = 0, making it dijkstra, gbfs = 1 making sure g is multiplied by 1
 	printf("Dijkstra\n");
 	begin = clock();
+	trueBegin += (double)begin;
 	findAdjecencies(graph);
 	end = clock();
+	trueEnd += (double)end;
 	printf("Time expended for creating the graph: %lf\n", (double)(end - begin) / CLOCKS_PER_SEC);
 	aStarGBFS(graph, 0, 1);
 	printf("Number of unique expansions: %d\n", graph->expansions);
@@ -88,8 +91,10 @@ void runAll(struct Graph* graph) {
 	// Weight = 1, making it A*, gbfs = 1 making sure g is multiplied by 1
 	printf("A*\n");
 	begin = clock();
+	trueBegin += (double)begin;
 	findAdjecencies(graph);
 	end = clock();
+	trueEnd += (double)end;
 	printf("Time expended for creating the graph: %lf\n", (double)(end - begin) / CLOCKS_PER_SEC);
 	aStarGBFS(graph, 1, 1);
 	printf("Number of unique expansions: %d\n", graph->expansions);
@@ -99,8 +104,10 @@ void runAll(struct Graph* graph) {
 	// Weight = 5
 	printf("WA*, W = 5\n");
 	begin = clock();
+	trueBegin += (double)begin;
 	findAdjecencies(graph);
 	end = clock();
+	trueEnd += (double)end;
 	printf("Time expended for creating the graph: %lf\n", (double)(end - begin) / CLOCKS_PER_SEC);
 	aStarGBFS(graph, 5, 1);
 	printf("Number of unique expansions: %d\n", graph->expansions);
@@ -110,8 +117,10 @@ void runAll(struct Graph* graph) {
 	// Weight = 10
 	printf("WA*, W = 10\n");
 	begin = clock();
+	trueBegin += (double)begin;
 	findAdjecencies(graph);
 	end = clock();
+	trueEnd += (double)end;
 	printf("Time expended for creating the graph: %lf\n", (double)(end - begin) / CLOCKS_PER_SEC);
 	aStarGBFS(graph, 10, 1);
 	printf("Number of unique expansions: %d\n", graph->expansions);
@@ -121,8 +130,10 @@ void runAll(struct Graph* graph) {
 	// Weight = 0.1
 	printf("WA*, W = 0.1\n");
 	begin = clock();
+	trueBegin += (double)begin;
 	findAdjecencies(graph);
 	end = clock();
+	trueEnd += (double)end;
 	printf("Time expended for creating the graph: %lf\n", (double)(end - begin) / CLOCKS_PER_SEC);
 	aStarGBFS(graph, 5, 1);
 	printf("Number of unique expansions: %d\n", graph->expansions);
@@ -132,8 +143,10 @@ void runAll(struct Graph* graph) {
 	// Weight = 1, gbfs = 0 ensuring that g becomes 0
 	printf("GBFS\n");
 	begin = clock();
+	trueBegin += (double)begin;
 	findAdjecencies(graph);
 	end = clock();
+	trueEnd += (double)end;
 	printf("Time expended for creating the graph: %lf\n", (double)(end - begin) / CLOCKS_PER_SEC);
 	aStarGBFS(graph, 1, 1);
 	printf("Number of unique expansions: %d\n", graph->expansions);
@@ -143,11 +156,15 @@ void runAll(struct Graph* graph) {
 	//RBFS
 	printf("RBFS\n");
 	begin = clock();
+	trueBegin += (double)begin;
 	findAdjecencies(graph);
 	end = clock();
+	trueEnd += (double)end;
 	printf("Time expended for creating the graph: %lf\n", (double)(end - begin) / CLOCKS_PER_SEC);
 	RBFS(graph);
 	printf("Number of unique expansions: %d\n", graph->expansions);
 	printf("Number of re-expansions: %d\n", graph->reExpansions);
 	resetGraph(graph);
+
+	printf("Time expended for creating the graph on average: %lf\n", (trueEnd - trueBegin) / (CLOCKS_PER_SEC * 7));
 }
