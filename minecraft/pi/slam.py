@@ -15,7 +15,7 @@ class Slam():
             while True:
                 if self.is_recording:
                     x, y, z, yaw = self.get_location_from_gps()
-                    self.nodes.append((self.node_id, self.player_id, self.seq_id, x, y, z, yaw))
+                    self.nodes.append((self.node_id, self.player_id, self.seq_id, x, y, z))
                     self.node_id += 1
                     self.seq_id += 1
                 time.sleep(1)
