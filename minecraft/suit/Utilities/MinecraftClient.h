@@ -9,7 +9,7 @@
 #include "Metrics.h"
 
 int mcInit();
-int mcConnect(int port);
+int mcConnect(char* ip, int port);
 int mcClose();
 
 void mcGetLocation(struct Location* location);
