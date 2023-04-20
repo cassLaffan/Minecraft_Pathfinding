@@ -33,7 +33,7 @@ int mcInit() {
 	return 0;
 }
 
-int mcConnect(int port) {
+int mcConnect(char* ip, int port) {
 	if ((s = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
 		printf("Could not create socket: %d", WSAGetLastError());
 		return 1;
